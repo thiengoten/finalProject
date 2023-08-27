@@ -1,12 +1,11 @@
 import { RouterProvider } from 'react-router-dom'
 import router from './routes'
-import { NextUIProvider } from '@nextui-org/react'
 
 function App() {
   return (
-    <NextUIProvider>
+    <>
       <RouterProvider router={router} />
-    </NextUIProvider>
+    </>
   )
 }
 

@@ -1,3 +1,4 @@
+import RootLayout from '@/layouts/RootLayout'
 import {
   Route,
   createBrowserRouter,
@@ -5,14 +6,7 @@ import {
 } from 'react-router-dom'
 
 const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route
-      path="/"
-      element={
-        <h1 className="text-xl font-bold text-red-500">Hello, world!</h1>
-      }
-    />
-  )
+  createRoutesFromElements(<Route path="/" element={<RootLayout />} />)
 )
 
 export default router
