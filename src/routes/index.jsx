@@ -1,6 +1,7 @@
 import RootLayout from '@/layouts/RootLayout'
 import Home from '@/pages/Home'
 import Login from '@/pages/Login'
+import { navbarLoader } from '@/utils/loaders/routerLoader'
 import {
   Route,
   createBrowserRouter,
@@ -10,7 +11,7 @@ import {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<RootLayout />}>
+      <Route path="/" element={<RootLayout />} loader={navbarLoader}>
         <Route index element={<Home />} />
         <Route path="features" element={<div>Features</div>} />
         <Route path="about" element={<div>About</div>} />

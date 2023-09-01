@@ -16,6 +16,8 @@ import { MailIcon } from '@/assets/MailIcon'
 
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { supabase } from '@/config/db/supabaseClient'
+import GoogleSignInButton from './GoogleSignInButton'
 
 const schema = yup.object().shape({
   email: yup
@@ -40,11 +42,17 @@ const schema = yup.object().shape({
 
 const LoginModal = ({ isOpen, onOpenChange }) => {
   const [isVisible, setIsVisible] = useState(false)
+  const [loginStatus, setLoginStatus] = useState(null)
 
   const navigate = useNavigate()
 
-  const { control, handleSubmit } = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isDirty, isValid },
+  } = useForm({
     resolver: yupResolver(schema),
+    mode: 'onChange',
   })
 
   const toggleVisibility = () => setIsVisible(!isVisible)
@@ -53,17 +61,59 @@ const LoginModal = ({ isOpen, onOpenChange }) => {
     navigate('/forgot-password')
   }
 
-  const onSubmit = (data) => {
-    console.log(data)
+  const onSubmit = async (resource) => {
+    const { email, password } = resource
+    let { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+
+    if (error) {
+      setLoginStatus('error')
+      setTimeout(() => {
+        setLoginStatus(null)
+      }, 3000)
+    } else if (data) {
+      onOpenChange(false)
+      navigate('/')
+    }
   }
 
   return (
     <>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        motionProps={{
+          variants: {
+            enter: {
+              y: 0,
+              opacity: 1,
+              transition: {
+                duration: 0.2,
+                ease: 'easeInOut',
+              },
+            },
+            exit: {
+              y: 50,
+              opacity: 0,
+              transition: {
+                duration: 0.2,
+                ease: 'easeInOut',
+              },
+            },
+          },
+        }}
+      >
         <ModalContent>
           <>
             <ModalHeader className="flex flex-col gap-1">Log in</ModalHeader>
             <ModalBody>
+              {loginStatus === 'error' && (
+                <div className="text-red-500">
+                  Login failed. Check your email or password.
+                </div>
+              )}
               <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col gap-4"
@@ -71,7 +121,7 @@ const LoginModal = ({ isOpen, onOpenChange }) => {
                 <Controller
                   name="email"
                   control={control}
-                  render={({ field, fieldState, formState }) => {
+                  render={({ field, fieldState }) => {
                     return (
                       <Input
                         {...field}
@@ -85,8 +135,8 @@ const LoginModal = ({ isOpen, onOpenChange }) => {
                             : 'valid'
                         }
                         errorMessage={
-                          field.value && formState.errors
-                            ? fieldState.error?.message
+                          field.value && errors.email
+                            ? errors.email.message
                             : ''
                         }
                         endContent={
@@ -99,7 +149,7 @@ const LoginModal = ({ isOpen, onOpenChange }) => {
                 <Controller
                   name="password"
                   control={control}
-                  render={({ field, fieldState, formState }) => (
+                  render={({ field, fieldState }) => (
                     <Input
                       {...field}
                       label="Password"
@@ -110,8 +160,8 @@ const LoginModal = ({ isOpen, onOpenChange }) => {
                         field.value && fieldState.invalid ? 'invalid' : 'valid'
                       }
                       errorMessage={
-                        field.value && formState.errors
-                          ? fieldState.error?.message
+                        field.value && errors.password
+                          ? errors.password.message
                           : ''
                       }
                       endContent={
@@ -133,22 +183,22 @@ const LoginModal = ({ isOpen, onOpenChange }) => {
                 />
                 <div className="flex justify-between px-1 py-2">
                   <Link
-                    className="
-                   hover:cursor-pointer
-                  "
+                    className="hover:cursor-pointer"
                     color="primary"
                     size="sm"
-                    showAnchorIcon
                     onClick={onForgotPassword}
                   >
                     Dont have an account?
                   </Link>
+                  <GoogleSignInButton onOpenChange={onOpenChange} />
                 </div>
+
                 <Button
                   color="secondary"
                   variant="flat"
                   type="submit"
                   className="w-full"
+                  isDisabled={!isDirty || !isValid}
                 >
                   Log in
                 </Button>
