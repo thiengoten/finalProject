@@ -29,10 +29,10 @@ const GoogleSignInButton = ({ onOpenChange }) => {
         theme: 'filled_blue',
         size: 'medium',
         type: 'standard',
-        text: 'continue_with',
+        text: 'signin_with_google',
       })
     }
-  }, [])
+  }, [divRef.current])
   return (
     <>
       <div ref={divRef} />

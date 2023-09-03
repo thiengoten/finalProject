@@ -42,7 +42,6 @@ const schema = yup.object().shape({
 
 const LoginModal = ({ isOpen, onOpenChange }) => {
   const [isVisible, setIsVisible] = useState(false)
-  const [loginStatus, setLoginStatus] = useState(null)
 
   const navigate = useNavigate()
 
@@ -57,10 +56,6 @@ const LoginModal = ({ isOpen, onOpenChange }) => {
 
   const toggleVisibility = () => setIsVisible(!isVisible)
 
-  const onForgotPassword = () => {
-    navigate('/forgot-password')
-  }
-
   const onSubmit = async (resource) => {
     const { email, password } = resource
     let { data, error } = await supabase.auth.signInWithPassword({
@@ -68,12 +63,7 @@ const LoginModal = ({ isOpen, onOpenChange }) => {
       password,
     })
 
-    if (error) {
-      setLoginStatus('error')
-      setTimeout(() => {
-        setLoginStatus(null)
-      }, 3000)
-    } else if (data) {
+    if (data) {
       onOpenChange(false)
       navigate('/')
     }
@@ -109,11 +99,6 @@ const LoginModal = ({ isOpen, onOpenChange }) => {
           <>
             <ModalHeader className="flex flex-col gap-1">Log in</ModalHeader>
             <ModalBody>
-              {loginStatus === 'error' && (
-                <div className="text-red-500">
-                  Login failed. Check your email or password.
-                </div>
-              )}
               <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col gap-4"
@@ -186,7 +171,8 @@ const LoginModal = ({ isOpen, onOpenChange }) => {
                     className="hover:cursor-pointer"
                     color="primary"
                     size="sm"
-                    onClick={onForgotPassword}
+                    onClick={() => navigate('/sign-up')}
+                    anchorIcon
                   >
                     Dont have an account?
                   </Link>
