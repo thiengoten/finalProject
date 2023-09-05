@@ -12,8 +12,8 @@ import {
   Switch,
   useDisclosure,
 } from '@nextui-org/react'
-import { NavLink, Outlet, useLoaderData, useNavigate } from 'react-router-dom'
-import LoginModal from './LoginModal'
+import { NavLink, useLoaderData, useNavigate } from 'react-router-dom'
+import LoginModal from '../auth/LoginModal'
 import { supabase } from '@/config/db/supabaseClient'
 import { SunIcon } from '@/assets/SunIcon'
 import { MoonIcon } from '@/assets/MoonIcon'
