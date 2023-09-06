@@ -169,7 +169,7 @@ const SignUp = () => {
                   )
                 }}
               />
-              <Button className="mt-5" color="primary" type="submit">
+              <Button className="mt-5" color="secondary" type="submit">
                 Sign Up
               </Button>
             </form>

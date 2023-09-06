@@ -7,7 +7,7 @@ function App() {
 
   return (
     <main
-      className={`${isDarkMode ? 'dark' : ''} bg-background text-foreground`}
+      className={`${isDarkMode ? 'dark' : ''}  bg-background text-foreground`}
     >
       <RouterProvider router={router} />
     </main>
