@@ -98,12 +98,7 @@ const NavBar = ({ children }) => {
                 </DropdownMenu>
               </Dropdown>
             ) : (
-              <Button
-                className="border-none"
-                color="secondary"
-                variant="solid"
-                onPress={onOpen}
-              >
+              <Button color="secondary" variant="shadow" onPress={onOpen}>
                 Login
               </Button>
             )}
