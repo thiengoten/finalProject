@@ -14,12 +14,12 @@ import {
 } from '@nextui-org/react'
 import { NavLink, useLoaderData, useNavigate } from 'react-router-dom'
 import LoginModal from '../auth/LoginModal'
-import { supabase } from '@/config/db/supabaseClient'
+import { supabase } from '@/config/supabaseClient'
 import { SunIcon } from '@/assets/SunIcon'
 import { MoonIcon } from '@/assets/MoonIcon'
 import { useDarkModeContext } from '@/hooks/useDarkMode'
 
-const NavBar = ({ children }) => {
+const NavBar = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const userData = useLoaderData()
   const navigate = useNavigate()
@@ -35,7 +35,7 @@ const NavBar = ({ children }) => {
   }
 
   return (
-    <div>
+    <>
       <Navbar className="drop-shadow-lg">
         <NavbarBrand>
           <NavLink to="/">KeyCat</NavLink>
@@ -106,8 +106,7 @@ const NavBar = ({ children }) => {
           </NavbarItem>
         </NavbarContent>
       </Navbar>
-      <div className="mx-14 mt-10 min-h-screen max-w-full">{children}</div>
-    </div>
+    </>
   )
 }
 

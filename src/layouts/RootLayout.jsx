@@ -3,10 +3,11 @@ import { Outlet } from 'react-router-dom'
 
 const RootLayout = () => {
   return (
-    <div>
-      <NavBar>
+    <div className="min-h-screen">
+      <NavBar />
+      <div className="mx-14 h-full max-w-full">
         <Outlet />
-      </NavBar>
+      </div>
     </div>
   )
 }

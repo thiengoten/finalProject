@@ -1,7 +1,7 @@
 import { Controller, useForm } from 'react-hook-form'
 import { LockIcon } from '@/assets/LockIcon'
 import { MailIcon } from '@/assets/MailIcon'
-import { supabase } from '@/config/db/supabaseClient'
+import { supabase } from '@/config/supabaseClient'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { Button, Input } from '@nextui-org/react'

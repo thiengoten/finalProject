@@ -1,4 +1,4 @@
-import { supabase } from '@/config/db/supabaseClient'
+import { supabase } from '@/config/supabaseClient'
 
 export async function navbarLoader() {
   const {

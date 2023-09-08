@@ -1,4 +1,5 @@
 import RootLayout from '@/layouts/RootLayout'
+import Chat from '@/pages/Chat'
 import Home from '@/pages/Home'
 import SignUp from '@/pages/SignUp'
 import { navbarLoader } from '@/utils/loaders'
@@ -13,7 +14,7 @@ const router = createBrowserRouter(
     <>
       <Route path="/" element={<RootLayout />} loader={navbarLoader}>
         <Route index element={<Home />} />
-        <Route path="features" element={<div>Features</div>} />
+        <Route path="features" element={<Chat />} />
         <Route path="about" element={<div>About</div>} />
         <Route path="integrations" element={<div>Integrations</div>} />
       </Route>

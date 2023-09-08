@@ -16,7 +16,7 @@ import { MailIcon } from '@/assets/MailIcon'
 
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { supabase } from '@/config/db/supabaseClient'
+import { supabase } from '@/config/supabaseClient'
 import GoogleSignInButton from './GoogleSignInButton'
 
 const schema = yup.object().shape({

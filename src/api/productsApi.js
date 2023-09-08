@@ -1,4 +1,4 @@
-import { supabase } from '@/config/db/supabaseClient'
+import { supabase } from '@/config/supabaseClient'
 import { ITEMS_PER_PAGE } from '@/constants'
 
 export const getAllProducts = async () => {
