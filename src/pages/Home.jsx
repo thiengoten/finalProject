@@ -1,4 +1,4 @@
-import { paginateProducts } from '@/api'
+import { paginateProducts } from '@/services'
 import ProductCard from '@/components/products/ProductCard'
 import { Pagination } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
