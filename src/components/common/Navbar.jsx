@@ -42,7 +42,7 @@ const NavBar = () => {
         </NavbarBrand>
         <NavbarContent className="hidden gap-4 sm:flex" justify="center">
           <NavbarItem className="transform transition duration-300 ease-in-out hover:scale-110 hover:text-secondary-300">
-            <NavLink to="/features">Features</NavLink>
+            <NavLink to="/chat-meow">Assistant</NavLink>
           </NavbarItem>
           <NavbarItem className="transform transition duration-300 ease-in-out hover:scale-110 hover:text-primary">
             <NavLink to="/about">About</NavLink>

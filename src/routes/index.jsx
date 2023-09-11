@@ -14,7 +14,7 @@ const router = createBrowserRouter(
     <>
       <Route path="/" element={<RootLayout />} loader={navbarLoader}>
         <Route index element={<Home />} />
-        <Route path="features" element={<Chat />} />
+        <Route path="chat-meow" element={<Chat />} />
         <Route path="about" element={<div>About</div>} />
         <Route path="integrations" element={<div>Integrations</div>} />
       </Route>
