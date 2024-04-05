@@ -3,6 +3,7 @@ import Chat from '@/pages/Chat'
 import Home from '@/pages/Home'
 import SignUp from '@/pages/SignUp'
 import { navbarLoader } from '@/utils/loaders'
+import { logoutAction } from '@/utils/logout'
 import {
   Route,
   createBrowserRouter,
@@ -17,8 +18,10 @@ const router = createBrowserRouter(
         <Route path="chat-meow" element={<Chat />} />
         <Route path="about" element={<div>About</div>} />
         <Route path="integrations" element={<div>Integrations</div>} />
+        <Route path="logout" action={logoutAction} />
       </Route>
       <Route path="/sign-up" element={<SignUp />} />
+      {/* <Route path='/admin' element={<Admin/>}/> */}
       <Route path="*" element={<div>404</div>} />
     </>,
   ),

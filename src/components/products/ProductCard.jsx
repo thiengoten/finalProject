@@ -1,10 +1,6 @@
 import { Card, CardBody, CardFooter, Image, Skeleton } from '@nextui-org/react'
 
 const ProductCard = ({ product, isLoading }) => {
-  console.log(
-    '🚀 ~ file: ProductCard.jsx:4 ~ ProductCard ~ isLoading:',
-    isLoading,
-  )
   return (
     <Card
       className="max-w-[300px]"

@@ -15,6 +15,7 @@ export const paginateProducts = async (page) => {
     .from('products')
     .select('*', { count: 'exact' })
     .range(from, to)
+  console.log('🚀 ~ file: productsApi.js:18 ~ paginateProducts ~ data:', data)
 
   const total = Math.ceil(count / ITEMS_PER_PAGE)
 

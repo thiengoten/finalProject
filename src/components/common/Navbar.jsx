@@ -12,27 +12,41 @@ import {
   Switch,
   useDisclosure,
 } from '@nextui-org/react'
-import { NavLink, useLoaderData, useNavigate } from 'react-router-dom'
+import { Form, NavLink, useLoaderData, useNavigate } from 'react-router-dom'
 import LoginModal from '../auth/LoginModal'
 import { supabase } from '@/config/supabaseClient'
 import { SunIcon } from '@/assets/SunIcon'
 import { MoonIcon } from '@/assets/MoonIcon'
 import { useDarkModeContext } from '@/hooks/useDarkMode'
+import { useEffect, useState } from 'react'
 
 const NavBar = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const userData = useLoaderData()
-  const navigate = useNavigate()
+  // const [loading, setLoading] = useState(false)
+  // const [userData, setUserData] = useState(null)
+  // const navigate = useNavigate()
   const { isDarkMode, toggle } = useDarkModeContext()
 
-  const handleLogout = async () => {
-    let { error } = await supabase.auth.signOut()
-    if (error) {
-      console.log(error)
-    }
+  // useEffect(() => {
+  //   const test = async () => {
+  //     const {
+  //       data: { user },
+  //     } = await supabase.auth.getUser()
 
-    navigate('/')
-  }
+  //     setUserData(user)
+  //     setLoading(false)
+  //   }
+  //   test()
+  // }, [loading])
+
+  // const handleLogout = async () => {
+  //   if (error) {
+  //     console.log(error)
+  //   }
+  //   setLoading(true)
+  //   navigate('/')
+  // }
 
   return (
     <>
@@ -91,9 +105,18 @@ const NavBar = () => {
                     key="logout"
                     color="danger"
                     className="text-danger"
-                    onClick={handleLogout}
                   >
-                    Log Out
+                    <Form
+                      method="post"
+                      action="/logout"
+                      onSubmit={(e) => {
+                        if (!confirm('Are you sure you want to logout?')) {
+                          e.preventDefault()
+                        }
+                      }}
+                    >
+                      <button type="submit">Logout</button>
+                    </Form>
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>

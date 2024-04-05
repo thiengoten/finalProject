@@ -14,6 +14,7 @@ const Home = () => {
       keepPreviousData: true,
     },
   )
+  console.log(data)
 
   const { result, totalPage } = !!data && data
 
