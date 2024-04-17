@@ -1,12 +1,14 @@
 import { Card, CardBody, CardFooter, Image, Skeleton } from '@nextui-org/react'
+import { useNavigate } from 'react-router-dom'
 
 const ProductCard = ({ product, isLoading }) => {
+  const navigate = useNavigate()
   return (
     <Card
       className="max-w-[300px]"
       shadow="sm"
       isPressable
-      // onPress={() => console.log(product.title)}
+      onPress={() => navigate(`/products/${product.id}`)}
     >
       <CardBody className="overflow-visible p-0">
         <Image
@@ -15,8 +17,8 @@ const ProductCard = ({ product, isLoading }) => {
           radius="lg"
           width="100%"
           alt={product.name}
-          className="max-h-[300px] min-h-[140px] w-full object-cover"
-          src={`https://app.requestly.io/delay/2000/${product.imageURL}`}
+          className="max-h-[200px] min-h-[150px] w-full object-cover"
+          src="https://app.requestly.io/delay/5000/https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
         />
       </CardBody>
       <CardFooter className="justify-between text-small">

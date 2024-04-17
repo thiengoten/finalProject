@@ -1,6 +1,11 @@
+import AdminLayout from '@/layouts/AdminLayout'
 import RootLayout from '@/layouts/RootLayout'
+import AddProduct from '@/pages/Admin/AddProduct'
+
+import AdminProduct from '@/pages/Admin/AdminProduct'
 import Chat from '@/pages/Chat'
 import Home from '@/pages/Home'
+import ProductDetail from '@/pages/Products/ProductDetail'
 import SignUp from '@/pages/SignUp'
 import { navbarLoader } from '@/utils/loaders'
 import { logoutAction } from '@/utils/logout'
@@ -16,12 +21,20 @@ const router = createBrowserRouter(
       <Route path="/" element={<RootLayout />} loader={navbarLoader}>
         <Route index element={<Home />} />
         <Route path="chat-meow" element={<Chat />} />
+        <Route path="products/:id" element={<ProductDetail />} />
         <Route path="about" element={<div>About</div>} />
         <Route path="integrations" element={<div>Integrations</div>} />
         <Route path="logout" action={logoutAction} />
       </Route>
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route path="products" element={<AdminProduct />} />
+        <Route path="products/new" element={<AddProduct />} />
+        <Route path="products/:id" element={<AddProduct />} />
+        <Route path="dash-board" element={<div>Hello</div>} />
+        <Route path="users" element={<div>Users</div>} />
+        <Route path="orders" element={<div>Orders</div>} />
+      </Route>
       <Route path="/sign-up" element={<SignUp />} />
-      {/* <Route path='/admin' element={<Admin/>}/> */}
       <Route path="*" element={<div>404</div>} />
     </>,
   ),

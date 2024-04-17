@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Badge,
   Button,
   Dropdown,
   DropdownItem,
@@ -19,44 +20,24 @@ import { SunIcon } from '@/assets/SunIcon'
 import { MoonIcon } from '@/assets/MoonIcon'
 import { useDarkModeContext } from '@/hooks/useDarkMode'
 import { useEffect, useState } from 'react'
+import { Icon } from '@iconify/react'
+import logo from '@/assets/test.png'
 
 const NavBar = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const userData = useLoaderData()
-  // const [loading, setLoading] = useState(false)
-  // const [userData, setUserData] = useState(null)
-  // const navigate = useNavigate()
   const { isDarkMode, toggle } = useDarkModeContext()
-
-  // useEffect(() => {
-  //   const test = async () => {
-  //     const {
-  //       data: { user },
-  //     } = await supabase.auth.getUser()
-
-  //     setUserData(user)
-  //     setLoading(false)
-  //   }
-  //   test()
-  // }, [loading])
-
-  // const handleLogout = async () => {
-  //   if (error) {
-  //     console.log(error)
-  //   }
-  //   setLoading(true)
-  //   navigate('/')
-  // }
 
   return (
     <>
       <Navbar className="drop-shadow-lg">
         <NavbarBrand>
+          <img src={logo} className="h-10 w-10" />
           <NavLink to="/">KeyCat</NavLink>
         </NavbarBrand>
-        <NavbarContent className="hidden gap-4 sm:flex" justify="center">
+        <NavbarContent className="hidden gap-5 sm:flex" justify="start">
           <NavbarItem className="transform transition duration-300 ease-in-out hover:scale-110 hover:text-secondary-300">
-            <NavLink to="/chat-meow">Assistant</NavLink>
+            <NavLink to="/chat-meow">Chat</NavLink>
           </NavbarItem>
           <NavbarItem className="transform transition duration-300 ease-in-out hover:scale-110 hover:text-primary">
             <NavLink to="/about">About</NavLink>
@@ -126,6 +107,18 @@ const NavBar = () => {
               </Button>
             )}
             <LoginModal isOpen={isOpen} onOpenChange={onOpenChange} />
+          </NavbarItem>
+          <NavbarItem>
+            <Badge content="1" shape="circle" color="danger">
+              <Button
+                radius="full"
+                isIconOnly
+                aria-label="more than 99 notifications"
+                variant="light"
+              >
+                <Icon icon="solar:cart-large-bold" width={24} />
+              </Button>
+            </Badge>
           </NavbarItem>
         </NavbarContent>
       </Navbar>

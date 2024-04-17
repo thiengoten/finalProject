@@ -113,9 +113,11 @@ const Chat = () => {
           onValueChange={setUserInput}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && e.shiftKey) {
+              // Add new line when user press shift + enter
               setUserInput(userInput + '\n')
             }
             if (e.key === 'Enter' && !e.shiftKey) {
+              // Submit when user press enter
               e.preventDefault()
               handleSummit()
               setUserInput('')

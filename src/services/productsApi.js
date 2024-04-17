@@ -14,8 +14,8 @@ export const paginateProducts = async (page) => {
   const { data, count, error } = await supabase
     .from('products')
     .select('*', { count: 'exact' })
+    .order('id', { ascending: false })
     .range(from, to)
-  console.log('🚀 ~ file: productsApi.js:18 ~ paginateProducts ~ data:', data)
 
   const total = Math.ceil(count / ITEMS_PER_PAGE)
 
@@ -23,5 +23,43 @@ export const paginateProducts = async (page) => {
   return {
     result: data,
     totalPage: total,
+  }
+}
+
+export const createProduct = async (product) => {
+  const { error, status } = await supabase.from('products').insert(product)
+  if (error) throw error
+  return status
+}
+
+export const getProductById = async (id) => {
+  const { data, error } = await supabase
+    .from('products')
+    .select()
+    .eq('id', id)
+    .single()
+  if (error) throw error
+  return data
+}
+
+export const updateProduct = async (id, product) => {
+  const { error, status } = await supabase
+    .from('products')
+    .update(product)
+    .eq('id', id)
+  if (error) throw error
+  return status
+}
+
+export const deleteProduct = async (id) => {
+  const { data, error, status } = await supabase
+    .from('products')
+    .delete()
+    .eq('id', id)
+    .select()
+  if (error) throw error
+  return {
+    data,
+    status,
   }
 }

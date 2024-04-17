@@ -12,6 +12,7 @@ const Home = () => {
     () => paginateProducts(page),
     {
       keepPreviousData: true,
+      staleTime: 1000 * 20,
     },
   )
   console.log(data)
@@ -20,7 +21,7 @@ const Home = () => {
 
   return (
     <>
-      <h1 className="mb-6 text-2xl font-semibold">Products</h1>
+      <h1 className="my-6 text-2xl font-semibold">Products</h1>
       <div className="grid grid-cols-2 gap-unit-lg sm:grid-cols-3 lg:grid-cols-4">
         {result?.map((product, index) => (
           <ProductCard key={index} product={product} isLoading={isLoading} />
