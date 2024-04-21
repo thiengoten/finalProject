@@ -28,11 +28,13 @@ import { MoonIcon } from '@/assets/MoonIcon'
 import { useDarkModeContext } from '@/hooks/useDarkMode'
 import { Icon } from '@iconify/react'
 import logo from '@/assets/test.png'
+import { useCartAction } from '@/hooks'
 
 const NavBar = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const userData = useLoaderData()
   const { isDarkMode, toggle } = useDarkModeContext()
+  const [state, dispatch] = useCartAction()
 
   return (
     <>

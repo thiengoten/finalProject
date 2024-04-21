@@ -1,16 +1,25 @@
+import { ADD_TO_CART, REMOVE_CART_ITEM } from '@/constants'
+
 export const initState = {
   carts: [],
-  cartInput: '',
 }
 
 function reducer(state = initState, action) {
   switch (action.type) {
-    case 'ADD_TO_CART':
-      return {
-        ...state,
-        carts: [...state.carts, action.payload],
+    case ADD_TO_CART:
+      // eslint-disable-next-line no-case-declarations
+      const itemExists = state.carts.some(
+        (cart) => cart.id === action.payload.id,
+      )
+      if (itemExists) {
+        return state
+      } else {
+        return {
+          ...state,
+          carts: [...state.carts, action.payload],
+        }
       }
-    case 'DELETE_CART_ITEM':
+    case REMOVE_CART_ITEM:
       return {
         ...state,
         carts: state.carts.filter((cart) => cart.id !== action.payload),
