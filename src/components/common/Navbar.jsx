@@ -2,24 +2,30 @@ import {
   Avatar,
   Badge,
   Button,
+  Card,
+  CardBody,
+  CardFooter,
+  Divider,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  Image,
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Switch,
   useDisclosure,
 } from '@nextui-org/react'
-import { Form, NavLink, useLoaderData, useNavigate } from 'react-router-dom'
+import { Form, NavLink, useLoaderData } from 'react-router-dom'
 import LoginModal from '../auth/LoginModal'
-import { supabase } from '@/config/supabaseClient'
 import { SunIcon } from '@/assets/SunIcon'
 import { MoonIcon } from '@/assets/MoonIcon'
 import { useDarkModeContext } from '@/hooks/useDarkMode'
-import { useEffect, useState } from 'react'
 import { Icon } from '@iconify/react'
 import logo from '@/assets/test.png'
 
@@ -50,7 +56,7 @@ const NavBar = () => {
           <NavbarItem>
             <Switch
               size="lg"
-              color="secondary"
+              color="default"
               onChange={toggle}
               thumbIcon={({ className }) =>
                 !isDarkMode ? (
@@ -102,7 +108,7 @@ const NavBar = () => {
                 </DropdownMenu>
               </Dropdown>
             ) : (
-              <Button color="secondary" variant="shadow" onPress={onOpen}>
+              <Button color="primary" variant="shadow" onPress={onOpen}>
                 Login
               </Button>
             )}
@@ -110,14 +116,70 @@ const NavBar = () => {
           </NavbarItem>
           <NavbarItem>
             <Badge content="1" shape="circle" color="danger">
-              <Button
-                radius="full"
-                isIconOnly
-                aria-label="more than 99 notifications"
-                variant="light"
-              >
-                <Icon icon="solar:cart-large-bold" width={24} />
-              </Button>
+              <Popover placement="bottom-end">
+                <PopoverTrigger>
+                  <Button
+                    radius="full"
+                    isIconOnly
+                    aria-label="more than 99 notifications"
+                    variant="light"
+                    className="outline-0"
+                  >
+                    <Icon icon="solar:cart-large-bold" width={28} />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <Card shadow="none" className="max-w-[300px] border-none">
+                    <CardBody className="justify-between ">
+                      <div className="flex justify-between gap-5">
+                        <Image
+                          src="https://zqniiryyuwuamggkxgcf.supabase.co/storage/v1/object/public/products/OK_DalgonaProductShotRender_120323.jpg"
+                          alt="product image"
+                          width={100}
+                          height="auto"
+                        />
+                        <div className="flex flex-col justify-between">
+                          <div className="flex flex-col items-start justify-start">
+                            <h4 className="text-small font-bold leading-none text-default-600">
+                              Zoey Lang
+                            </h4>
+                            <h5 className="text-small tracking-tight text-default-500">
+                              @zoeylang
+                            </h5>
+                          </div>
+                          <h4 className="text-base font-bold leading-none text-default-600">
+                            $100.00
+                          </h4>
+                        </div>
+                        <Button
+                          radius="full"
+                          size="sm"
+                          className="self-center"
+                          isIconOnly
+                          variant="light"
+                        >
+                          <Icon
+                            icon="iconamoon:close-bold"
+                            width={24}
+                            height={24}
+                          />
+                        </Button>
+                      </div>
+                    </CardBody>
+                    <CardFooter>
+                      <Button
+                        color="primary"
+                        className="w-full"
+                        variant="flat"
+                        disableAnimation
+                        disableRipple
+                      >
+                        Checkout
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </PopoverContent>
+              </Popover>
             </Badge>
           </NavbarItem>
         </NavbarContent>

@@ -7,7 +7,7 @@ import { useState } from 'react'
 const Home = () => {
   const [page, setPage] = useState(1)
 
-  const { data, isLoading, isError } = useQuery(
+  const { data, isLoading } = useQuery(
     ['products', page],
     () => paginateProducts(page),
     {
@@ -15,7 +15,6 @@ const Home = () => {
       staleTime: 1000 * 20,
     },
   )
-  console.log(data)
 
   const { result, totalPage } = !!data && data
 
@@ -30,7 +29,7 @@ const Home = () => {
 
       <Pagination
         className="mt-6 flex justify-center p-6"
-        color="secondary"
+        color="primary"
         showControls
         total={totalPage}
         initialPage={1}

@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {
   Accordion,
   AccordionItem,
@@ -11,14 +10,47 @@ import { Icon } from '@iconify/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { getProductById } from '@/services'
+import { useContext } from 'react'
+import { CartActionContext } from '@/contexts'
+import { actions } from '@/store/index'
+import { supabase } from '@/config/supabaseClient'
+import { useStripe } from '@stripe/react-stripe-js'
 
 const ProductDetail = () => {
   const { id } = useParams()
+  const stripe = useStripe()
+  const [state, dispatch] = useContext(CartActionContext)
   const { data, isLoading } = useQuery({
     queryKey: ['product', id],
     queryFn: () => getProductById(id),
     enabled: !!id,
   })
+
+  const handleAddToCart = async () => {
+    const { data, error } = await supabase.functions.invoke('hello-world', {
+      body: {
+        products: [
+          {
+            name: 'T-shirt',
+            price: 2000,
+            quantity: 1,
+            image:
+              'https://zqniiryyuwuamggkxgcf.supabase.co/storage/v1/object/public/products/download.jpg',
+          },
+        ],
+      },
+    })
+    console.log('🚀 ~ handleAddToCart ~ test:', data)
+    if (data) {
+      const test = await stripe.redirectToCheckout({
+        sessionId: data.id,
+      })
+      console.log('🚀 ~ handleAddToCart ~ test:', test)
+    }
+    if (error) {
+      console.error('🚀 ~ handleAddToCart ~ error:', error)
+    }
+  }
   return (
     <Card
       isBlurred
@@ -77,6 +109,7 @@ const ProductDetail = () => {
                   className="w-full text-lg font-medium"
                   size="lg"
                   color="primary"
+                  onClick={handleAddToCart}
                 >
                   <Icon icon="solar:cart-large-bold" width={24} />
                   Add to cart

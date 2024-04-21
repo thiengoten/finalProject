@@ -5,6 +5,7 @@ import AddProduct from '@/pages/Admin/AddProduct'
 import AdminProduct from '@/pages/Admin/AdminProduct'
 import Chat from '@/pages/Chat'
 import Home from '@/pages/Home'
+import ProductCheckout from '@/pages/Products/ProductCheckout'
 import ProductDetail from '@/pages/Products/ProductDetail'
 import SignUp from '@/pages/SignUp'
 import { navbarLoader } from '@/utils/loaders'
@@ -22,6 +23,7 @@ const router = createBrowserRouter(
         <Route index element={<Home />} />
         <Route path="chat-meow" element={<Chat />} />
         <Route path="products/:id" element={<ProductDetail />} />
+        <Route path="products/checkout" element={<ProductCheckout />} />
         <Route path="about" element={<div>About</div>} />
         <Route path="integrations" element={<div>Integrations</div>} />
         <Route path="logout" action={logoutAction} />
