@@ -5,7 +5,6 @@ import {
   Card,
   CardBody,
   CardFooter,
-  Divider,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -19,6 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Switch,
+  card,
   useDisclosure,
 } from '@nextui-org/react'
 import { Form, NavLink, useLoaderData } from 'react-router-dom'
@@ -29,12 +29,14 @@ import { useDarkModeContext } from '@/hooks/useDarkMode'
 import { Icon } from '@iconify/react'
 import logo from '@/assets/test.png'
 import { useCartAction } from '@/hooks'
+import { actions } from '@/store'
 
 const NavBar = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const userData = useLoaderData()
   const { isDarkMode, toggle } = useDarkModeContext()
   const [state, dispatch] = useCartAction()
+  console.log('🚀 ~ NavBar ~ state:', state)
 
   return (
     <>
@@ -131,54 +133,71 @@ const NavBar = () => {
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent>
-                  <Card shadow="none" className="max-w-[300px] border-none">
+                  <Card shadow="none" className="max-w-[350px] border-none">
                     <CardBody className="justify-between ">
-                      <div className="flex justify-between gap-5">
-                        <Image
-                          src="https://zqniiryyuwuamggkxgcf.supabase.co/storage/v1/object/public/products/OK_DalgonaProductShotRender_120323.jpg"
-                          alt="product image"
-                          width={100}
-                          height="auto"
-                        />
-                        <div className="flex flex-col justify-between">
-                          <div className="flex flex-col items-start justify-start">
-                            <h4 className="text-small font-bold leading-none text-default-600">
-                              Zoey Lang
-                            </h4>
-                            <h5 className="text-small tracking-tight text-default-500">
-                              @zoeylang
-                            </h5>
-                          </div>
-                          <h4 className="text-base font-bold leading-none text-default-600">
-                            $100.00
-                          </h4>
+                      {state.carts.length === 0 && (
+                        <div className="flex h-32 items-center justify-center">
+                          <h1 className="text-lg font-bold text-default-600">
+                            Your cart is empty
+                          </h1>
                         </div>
-                        <Button
-                          radius="full"
-                          size="sm"
-                          className="self-center"
-                          isIconOnly
-                          variant="light"
+                      )}
+                      {state?.carts?.map((cart) => (
+                        <div
+                          className="mb-2 flex justify-between gap-5"
+                          key={cart.id}
                         >
-                          <Icon
-                            icon="iconamoon:close-bold"
-                            width={24}
-                            height={24}
+                          <Image
+                            src={cart.imageURL}
+                            alt="product image"
+                            width={100}
+                            height="auto"
                           />
-                        </Button>
-                      </div>
+                          <div className="flex flex-col justify-between">
+                            <div className="flex flex-col items-start justify-start">
+                              <h4 className="text-smal max-w-[100px]  truncate font-bold leading-none text-default-600 ">
+                                {cart.name}
+                              </h4>
+                              <h5 className="text-small tracking-tight text-default-500 ">
+                                {cart.category}
+                              </h5>
+                            </div>
+                            <h4 className="text-base font-bold leading-none text-default-600">
+                              ${cart.price}.00
+                            </h4>
+                          </div>
+                          <Button
+                            radius="full"
+                            size="sm"
+                            className="self-center"
+                            onClick={() => {
+                              dispatch(actions.removeCardItem(cart.id))
+                            }}
+                            isIconOnly
+                            variant="light"
+                          >
+                            <Icon
+                              icon="iconamoon:close-bold"
+                              width={24}
+                              height={24}
+                            />
+                          </Button>
+                        </div>
+                      ))}
                     </CardBody>
-                    <CardFooter>
-                      <Button
-                        color="primary"
-                        className="w-full"
-                        variant="flat"
-                        disableAnimation
-                        disableRipple
-                      >
-                        Checkout
-                      </Button>
-                    </CardFooter>
+                    {state.carts.length > 0 && (
+                      <CardFooter>
+                        <Button
+                          color="primary"
+                          className="w-full"
+                          variant="flat"
+                          disableAnimation
+                          disableRipple
+                        >
+                          Checkout
+                        </Button>
+                      </CardFooter>
+                    )}
                   </Card>
                 </PopoverContent>
               </Popover>

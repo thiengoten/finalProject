@@ -17,6 +17,7 @@ const ProductDetail = () => {
   const { id } = useParams()
   // const stripe = useStripe()
   const [state, dispatch] = useCartAction()
+  console.log('🚀 ~ ProductDetail ~ state:', state)
   const { data, isLoading } = useQuery({
     queryKey: ['product', id],
     queryFn: () => getProductById(id),
