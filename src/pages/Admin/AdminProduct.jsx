@@ -49,7 +49,6 @@ const AdminProduct = () => {
 
   const { result, totalPage } = !!data && data
 
-  //* Render cell
   const renderCell = useCallback((item, columnKey) => {
     const cellValue = item[columnKey]
     switch (columnKey) {

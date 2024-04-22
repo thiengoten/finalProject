@@ -10,6 +10,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
   Image,
+  Input,
   Navbar,
   NavbarBrand,
   NavbarContent,
@@ -18,10 +19,9 @@ import {
   PopoverContent,
   PopoverTrigger,
   Switch,
-  card,
   useDisclosure,
 } from '@nextui-org/react'
-import { Form, NavLink, useLoaderData } from 'react-router-dom'
+import { Form, NavLink, useLoaderData, useNavigate } from 'react-router-dom'
 import LoginModal from '../auth/LoginModal'
 import { SunIcon } from '@/assets/SunIcon'
 import { MoonIcon } from '@/assets/MoonIcon'
@@ -33,6 +33,7 @@ import { actions } from '@/store'
 
 const NavBar = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const navigate = useNavigate()
   const userData = useLoaderData()
   const { isDarkMode, toggle } = useDarkModeContext()
   const [state, dispatch] = useCartAction()
@@ -119,7 +120,12 @@ const NavBar = () => {
             <LoginModal isOpen={isOpen} onOpenChange={onOpenChange} />
           </NavbarItem>
           <NavbarItem>
-            <Badge content="1" shape="circle" color="danger">
+            <Badge
+              content={state.carts.length > 99 ? '99+' : state.carts.length}
+              shape="circle"
+              color="danger"
+              isInvisible={state.carts.length === 0}
+            >
               <Popover placement="bottom-end">
                 <PopoverTrigger>
                   <Button
@@ -133,7 +139,7 @@ const NavBar = () => {
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent>
-                  <Card shadow="none" className="max-w-[350px] border-none">
+                  <Card shadow="none" className="max-w-[500px] border-none">
                     <CardBody className="justify-between ">
                       {state.carts.length === 0 && (
                         <div className="flex h-32 items-center justify-center">
@@ -150,7 +156,7 @@ const NavBar = () => {
                           <Image
                             src={cart.imageURL}
                             alt="product image"
-                            width={100}
+                            width={50}
                             height="auto"
                           />
                           <div className="flex flex-col justify-between">
@@ -165,6 +171,54 @@ const NavBar = () => {
                             <h4 className="text-base font-bold leading-none text-default-600">
                               ${cart.price}.00
                             </h4>
+                          </div>
+                          <div className="flex items-center rounded ">
+                            <Button
+                              radius="sm"
+                              size="sm"
+                              disableAnimation
+                              disableRipple
+                              className="self-center"
+                              isIconOnly
+                              variant="light"
+                              onClick={() => {
+                                dispatch(
+                                  actions.updateQuantity(
+                                    cart.id,
+                                    cart.quantity - 1,
+                                  ),
+                                )
+                              }}
+                            >
+                              <Icon icon="ic:round-minus" width={15} />
+                            </Button>
+                            <Input
+                              size="sm"
+                              type="text"
+                              defaultValue="1"
+                              className="w-7"
+                              isDisabled
+                              value={cart.quantity}
+                            />
+                            <Button
+                              radius="sm"
+                              size="sm"
+                              disableAnimation
+                              disableRipple
+                              className="self-center"
+                              isIconOnly
+                              variant="light"
+                              onClick={() => {
+                                dispatch(
+                                  actions.updateQuantity(
+                                    cart.id,
+                                    cart.quantity + 1,
+                                  ),
+                                )
+                              }}
+                            >
+                              <Icon icon="ic:round-plus" width={15} />
+                            </Button>
                           </div>
                           <Button
                             radius="full"
@@ -193,6 +247,9 @@ const NavBar = () => {
                           variant="flat"
                           disableAnimation
                           disableRipple
+                          onClick={() => {
+                            navigate('/products/checkout')
+                          }}
                         >
                           Checkout
                         </Button>

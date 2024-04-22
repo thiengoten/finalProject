@@ -5,6 +5,7 @@ import {
   Card,
   CardBody,
   Image,
+  Input,
 } from '@nextui-org/react'
 import { Icon } from '@iconify/react'
 import { useQuery } from '@tanstack/react-query'
@@ -17,38 +18,12 @@ const ProductDetail = () => {
   const { id } = useParams()
   // const stripe = useStripe()
   const [state, dispatch] = useCartAction()
-  console.log('🚀 ~ ProductDetail ~ state:', state)
   const { data, isLoading } = useQuery({
     queryKey: ['product', id],
     queryFn: () => getProductById(id),
     enabled: !!id,
   })
 
-  const handleAddToCart = () => {
-    dispatch(actions.addToCart(data))
-    // const { data, error } = await supabase.functions.invoke('hello-world', {
-    //   body: {
-    //     products: [
-    //       {
-    //         name: 'T-shirt',
-    //         price: 2000,
-    //         quantity: 1,
-    //         image:
-    //           'https://zqniiryyuwuamggkxgcf.supabase.co/storage/v1/object/public/products/download.jpg',
-    //       },
-    //     ],
-    //   },
-    // })
-    // if (data) {
-    //   const test = await stripe.redirectToCheckout({
-    //     sessionId: data.id,
-    //   })
-    //   console.log('🚀 ~ handleAddToCart ~ test:', test)
-    // }
-    // if (error) {
-    //   console.error('🚀 ~ handleAddToCart ~ error:', error)
-    // }
-  }
   return (
     <Card
       isBlurred
@@ -107,7 +82,9 @@ const ProductDetail = () => {
                   className="w-full text-lg font-medium"
                   size="lg"
                   color="primary"
-                  onClick={handleAddToCart}
+                  onClick={() => {
+                    dispatch(actions.addToCart(data))
+                  }}
                 >
                   <Icon icon="solar:cart-large-bold" width={24} />
                   Add to cart

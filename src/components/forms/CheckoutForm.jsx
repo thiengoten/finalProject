@@ -1,6 +1,3 @@
-import { Button } from '@nextui-org/react'
-import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
-
 const CheckoutForm = () => {
   // const stripe = useStripe()
   // stripe.redirectToCheckout({ sessionId: 'cs_test_a1c2e3d4e5f6g7h8i9j0' })
@@ -30,14 +27,7 @@ const CheckoutForm = () => {
   //   })
   //   console.log(result)
   // }
-  return (
-    <form>
-      {/* <PaymentElement />
-      <Button type="submit" color="success" disabled={!stripe}>
-        Pay
-      </Button> */}
-    </form>
-  )
+  return <p>Hello</p>
 }
 
 export default CheckoutForm
