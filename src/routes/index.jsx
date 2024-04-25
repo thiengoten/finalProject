@@ -1,10 +1,12 @@
 import AdminLayout from '@/layouts/AdminLayout'
 import RootLayout from '@/layouts/RootLayout'
 import AddProduct from '@/pages/Admin/AddProduct'
+import AdminOrder from '@/pages/Admin/AdminOrder'
 
 import AdminProduct from '@/pages/Admin/AdminProduct'
 import Chat from '@/pages/Chat'
 import Home from '@/pages/Home'
+import Orders from '@/pages/Orders'
 import ProductCheckout from '@/pages/Products/ProductCheckout'
 import ProductDetail from '@/pages/Products/ProductDetail'
 import SignUp from '@/pages/SignUp'
@@ -24,6 +26,7 @@ const router = createBrowserRouter(
         <Route path="chat-meow" element={<Chat />} />
         <Route path="products/:id" element={<ProductDetail />} />
         <Route path="products/checkout" element={<ProductCheckout />} />
+        <Route path="orders" element={<Orders />} loader={navbarLoader} />
         <Route path="about" element={<div>About</div>} />
         <Route path="integrations" element={<div>Integrations</div>} />
         <Route path="logout" action={logoutAction} />
@@ -32,7 +35,7 @@ const router = createBrowserRouter(
         <Route path="products" element={<AdminProduct />} />
         <Route path="products/new" element={<AddProduct />} />
         <Route path="products/:id" element={<AddProduct />} />
-        <Route path="dash-board" element={<div>Hello</div>} />
+        <Route path="user-orders" element={<AdminOrder />} />
         <Route path="users" element={<div>Users</div>} />
         <Route path="orders" element={<div>Orders</div>} />
       </Route>

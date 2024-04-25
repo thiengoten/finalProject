@@ -5,7 +5,6 @@ import {
   Card,
   CardBody,
   Image,
-  Input,
 } from '@nextui-org/react'
 import { Icon } from '@iconify/react'
 import { useQuery } from '@tanstack/react-query'
@@ -16,7 +15,6 @@ import { useCartAction } from '@/hooks'
 
 const ProductDetail = () => {
   const { id } = useParams()
-  // const stripe = useStripe()
   const [state, dispatch] = useCartAction()
   const { data, isLoading } = useQuery({
     queryKey: ['product', id],

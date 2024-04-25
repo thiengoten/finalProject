@@ -14,7 +14,7 @@ export const paginateProducts = async (page) => {
   const { data, count, error } = await supabase
     .from('products')
     .select('*', { count: 'exact' })
-    .order('id', { ascending: false })
+    .order('created_at', { ascending: false })
     .range(from, to)
 
   const total = Math.ceil(count / ITEMS_PER_PAGE)

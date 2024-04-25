@@ -5,6 +5,7 @@ import { supabase } from '@/config/supabaseClient'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { Button, Input } from '@nextui-org/react'
+import { useNavigate } from 'react-router-dom'
 
 const schema = yup.object().shape({
   email: yup
@@ -31,21 +32,22 @@ const schema = yup.object().shape({
     .required('Confirm Password is required'),
 })
 const EmailForm = ({ isHandsUpInput }) => {
+  const navigate = useNavigate()
   const { control, handleSubmit } = useForm({
     resolver: yupResolver(schema),
   })
   const onSubmit = async (result) => {
     const { email, password } = result
 
-    // let { data, error } = await supabase.auth.signUp({
-    //   email,
-    //   password,
-    // })
+    let { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    })
+    console.log('🚀 ~ onSubmit ~ data:', data)
 
-    // if (error) return console.log(error)
+    if (error) return console.log(error)
 
     // setTimeout(() => {
-    //   trigSuccessInput.fire()
     //   setTimeout(() => {
     //     navigate('/', {
     //       replace: true,

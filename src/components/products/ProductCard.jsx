@@ -18,7 +18,7 @@ const ProductCard = ({ product, isLoading }) => {
           width="100%"
           alt={product.name}
           className="max-h-[200px] min-h-[150px] w-full object-cover"
-          src="https://app.requestly.io/delay/5000/https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
+          src={product.imageURL}
         />
       </CardBody>
       <CardFooter className="justify-between text-small">

@@ -21,7 +21,13 @@ import {
   Switch,
   useDisclosure,
 } from '@nextui-org/react'
-import { Form, NavLink, useLoaderData, useNavigate } from 'react-router-dom'
+import {
+  Form,
+  Link,
+  NavLink,
+  useLoaderData,
+  useNavigate,
+} from 'react-router-dom'
 import LoginModal from '../auth/LoginModal'
 import { SunIcon } from '@/assets/SunIcon'
 import { MoonIcon } from '@/assets/MoonIcon'
@@ -30,14 +36,48 @@ import { Icon } from '@iconify/react'
 import logo from '@/assets/test.png'
 import { useCartAction } from '@/hooks'
 import { actions } from '@/store'
+import { useStripe } from '@stripe/react-stripe-js'
+import { createOrder } from '@/services'
 
 const NavBar = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  const navigate = useNavigate()
   const userData = useLoaderData()
-  const { isDarkMode, toggle } = useDarkModeContext()
+  console.log('🚀 ~ NavBar ~ userData:', userData)
+  const navigate = useNavigate()
+  const stripe = useStripe()
   const [state, dispatch] = useCartAction()
-  console.log('🚀 ~ NavBar ~ state:', state)
+  const { isDarkMode, toggle } = useDarkModeContext()
+
+  const handleCheckout = async () => {
+    const test = await createOrder(
+      {
+        user_id: userData.id,
+        total_amount: state.total,
+      },
+      state.carts,
+    )
+    if (test.orderDetailStatus === 201) {
+      dispatch(actions.clearCart())
+    }
+    // const { data, error } = await supabase.functions.invoke(
+    //   'stripe-stripe-checkout',
+    //   {
+    //     body: {
+    //       products: state.carts,
+    //     },
+    //   },
+    // )
+
+    // if (data) {
+    //   const test = await stripe.redirectToCheckout({
+    //     sessionId: data.id,
+    //   })
+    //   console.log('🚀 ~ handleAddToCart ~ test:', test)
+    // }
+    // if (error) {
+    //   console.error('🚀 ~ handleAddToCart ~ error:', error)
+    // }
+  }
 
   return (
     <>
@@ -92,7 +132,9 @@ const NavBar = () => {
                     </p>
                   </DropdownItem>
                   <DropdownItem key="settings">My Settings</DropdownItem>
-                  <DropdownItem key="my_order">My Order</DropdownItem>
+                  <DropdownItem key="my_order">
+                    <Link to="/orders">My Order</Link>
+                  </DropdownItem>
                   <DropdownItem
                     key="logout"
                     color="danger"
@@ -247,9 +289,7 @@ const NavBar = () => {
                           variant="flat"
                           disableAnimation
                           disableRipple
-                          onClick={() => {
-                            navigate('/products/checkout')
-                          }}
+                          onClick={handleCheckout}
                         >
                           Checkout
                         </Button>

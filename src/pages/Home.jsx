@@ -26,17 +26,18 @@ const Home = () => {
           <ProductCard key={index} product={product} isLoading={isLoading} />
         ))}
       </div>
-
-      <Pagination
-        className="mt-6 flex justify-center p-6"
-        color="primary"
-        showControls
-        total={totalPage}
-        initialPage={1}
-        onChange={(page) => {
-          setPage(page)
-        }}
-      />
+      {totalPage >= 1 && (
+        <Pagination
+          className="mt-6 flex justify-center p-6"
+          color="primary"
+          showControls
+          total={totalPage}
+          initialPage={1}
+          onChange={(page) => {
+            setPage(page)
+          }}
+        />
+      )}
     </>
   )
 }

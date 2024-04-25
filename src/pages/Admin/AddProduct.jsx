@@ -184,6 +184,12 @@ const AddProduct = () => {
         <Button className="w-11 flex-none" color="primary" type="submit">
           {id ? 'Update' : 'Add'}
         </Button>
+        <Button>
+          <a href="/admin/products">Cancel</a>
+        </Button>
+        <Button>
+          <a href="/admin/products/new">Add</a>
+        </Button>
       </form>
     </div>
   )

@@ -69,6 +69,24 @@ const LoginModal = ({ isOpen, onOpenChange }) => {
     }
   }
 
+  // const handleSigninWithGoogle = async () => {
+  //   try {
+  //     const { data, error } = await supabase.auth.signInWithOAuth({
+  //       provider: 'google',
+  //       options: {
+  //         queryParams: {
+  //           access_type: 'offline',
+  //           prompt: 'consent',
+  //         },
+  //       },
+  //     })
+  //     console.log('🚀 ~ handleSigninWithGoogle ~ data:', data)
+  //     console.log(error)
+  //   } catch (error) {
+  //     console.log('🚀 ~ handleSigninWithGoogle ~ error:', error)
+  //   }
+  // }
+
   return (
     <>
       <Modal

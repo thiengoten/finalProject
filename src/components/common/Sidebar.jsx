@@ -11,21 +11,21 @@ const Sidebar = () => {
       <ul className="mt-4 flex-1 px-3 py-4">
         <li>
           <NavLink
-            to={'dash-board'}
+            to={'user-orders'}
             className={({ isActive }) => {
               const activeClass = isActive ? 'bg-gray-700 text-white' : ''
               return `rounded-lg p-4 hover:bg-gray-700 ${activeClass} mb-2 block text-default-400 hover:text-white`
             }}
           >
-            Dashboard
+            User Order
           </NavLink>
         </li>
         <li>
           <NavLink
             to={'products'}
             className={({ isActive }) => {
-              const activeClass = isActive ? 'bg-gray-700' : ''
-              return `rounded-lg p-4 hover:bg-gray-700 ${activeClass} mb-2 block`
+              const activeClass = isActive ? 'bg-gray-700  text-white' : ''
+              return `rounded-lg p-4 hover:bg-gray-700 ${activeClass} mb-2 block text-default-400 hover:text-white`
             }}
           >
             Products

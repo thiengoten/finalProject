@@ -1,6 +1,6 @@
 import { supabase } from '@/config/supabaseClient'
 import { useEffect, useRef } from 'react'
-import { redirect, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const GoogleSignInButton = ({ onOpenChange }) => {
   const divRef = useRef(null)
