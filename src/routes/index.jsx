@@ -2,8 +2,10 @@ import AdminLayout from '@/layouts/AdminLayout'
 import RootLayout from '@/layouts/RootLayout'
 import AddProduct from '@/pages/Admin/AddProduct'
 import AdminOrder from '@/pages/Admin/AdminOrder'
+import AdminOrderDetails from '@/pages/Admin/AdminOrderDetails'
 
 import AdminProduct from '@/pages/Admin/AdminProduct'
+import AdminUsers from '@/pages/Admin/AdminUsers'
 import Chat from '@/pages/Chat'
 import Home from '@/pages/Home'
 import Orders from '@/pages/Orders'
@@ -36,8 +38,8 @@ const router = createBrowserRouter(
         <Route path="products/new" element={<AddProduct />} />
         <Route path="products/:id" element={<AddProduct />} />
         <Route path="user-orders" element={<AdminOrder />} />
-        <Route path="users" element={<div>Users</div>} />
-        <Route path="orders" element={<div>Orders</div>} />
+        <Route path="user-orders/:id" element={<AdminOrderDetails />} />
+        <Route path="users" element={<AdminUsers />} />
       </Route>
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="*" element={<div>404</div>} />

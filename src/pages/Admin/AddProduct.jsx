@@ -8,6 +8,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { useMatch, useParams } from 'react-router-dom'
 const AddProduct = () => {
   const [image, setImage] = useState(null)
+  console.log('🚀 ~ AddProduct ~ image:', image)
   const [isSuccess, setIsSuccess] = useState(false)
   const { id } = useParams()
   const isAddMode = useMatch('/admin/products/new')
@@ -47,20 +48,23 @@ const AddProduct = () => {
     if (isAddMode) {
       const formData = {
         ...data,
-        imageURL: `https://zqniiryyuwuamggkxgcf.supabase.co/storage/v1/object/public/products/${image.name}`,
-      }
-      const addStatus = await createProduct(formData)
-      if (addStatus === 201) {
-        reset()
-        setImage(null)
-        setIsSuccess(true)
-      }
-    } else {
-      const updateStatus = await updateProduct(id, data)
-      if (updateStatus === 204) {
-        setIsSuccess(true)
+        imageURL: image?.name
+          ? `https://ahspekfrkxpnpkvmnwcd.supabase.co/storage/v1/object/public/products/${image.name}`
+          : null,
       }
     }
+    //   const addStatus = await createProduct(formData)
+    //   if (addStatus === 201) {
+    //     reset()
+    //     setImage(null)
+    //     setIsSuccess(true)
+    //   }
+    // } else {
+    //   const updateStatus = await updateProduct(id, data)
+    //   if (updateStatus === 204) {
+    //     setIsSuccess(true)
+    //   }
+    // }
   }
   return (
     <div className="p-6">
@@ -183,12 +187,6 @@ const AddProduct = () => {
         </div>
         <Button className="w-11 flex-none" color="primary" type="submit">
           {id ? 'Update' : 'Add'}
-        </Button>
-        <Button>
-          <a href="/admin/products">Cancel</a>
-        </Button>
-        <Button>
-          <a href="/admin/products/new">Add</a>
         </Button>
       </form>
     </div>

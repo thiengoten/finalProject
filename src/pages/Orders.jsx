@@ -1,4 +1,4 @@
-import { getOrders } from '@/services'
+import { getOrdersByUserId } from '@/services'
 import { Card, CardBody, Divider } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import { useLoaderData } from 'react-router-dom'
@@ -8,7 +8,8 @@ const Orders = () => {
 
   const { data } = useQuery({
     queryKey: ['orders'],
-    queryFn: () => getOrders(userData?.id),
+    queryFn: () => getOrdersByUserId(userData?.id),
+    enabled: !!userData?.id,
   })
 
   return (

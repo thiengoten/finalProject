@@ -16,4 +16,12 @@ const columns = [
   { name: 'ACTIONS', uid: 'actions' },
 ]
 
-export { columns }
+const orderColumns = [
+  { name: 'ID', uid: 'id' },
+  { name: 'STATUS', uid: 'status' },
+  { name: 'USER', uid: 'user' },
+  { name: 'TOTAL', uid: 'total_amount' },
+  { name: 'ACTIONS', uid: 'actions' },
+]
+
+export { columns, orderColumns }

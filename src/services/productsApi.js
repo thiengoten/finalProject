@@ -52,14 +52,13 @@ export const updateProduct = async (id, product) => {
 }
 
 export const deleteProduct = async (id) => {
-  const { data, error, status } = await supabase
+  const { error, status } = await supabase
     .from('products')
     .delete()
     .eq('id', id)
-    .select()
-  if (error) throw error
+
   return {
-    data,
     status,
+    error,
   }
 }

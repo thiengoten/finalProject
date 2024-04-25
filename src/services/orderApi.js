@@ -22,13 +22,13 @@ const createOrder = async (order, orderDetails) => {
     )
 
   if (orderDetailError) {
-    throw orderDetailError
+    return orderDetailError
   }
 
   return { orderDetails, orderDetailStatus }
 }
 
-const getOrders = async (userId) => {
+const getOrdersByUserId = async (userId) => {
   const { data, error } = await supabase
     .from('orders')
     .select(
@@ -54,4 +54,41 @@ const getOrders = async (userId) => {
   return flattenedData
 }
 
-export { createOrder, getOrders }
+const getAllOrders = async () => {
+  const { data, error } = await supabase
+    .from('orders')
+    .select('id, total_amount, status, profiles(email))')
+
+  if (error) {
+    throw error
+  }
+
+  const flattenedData = data.map(({ profiles, ...order }) => ({
+    ...order,
+    user: profiles.email,
+  }))
+
+  return flattenedData
+}
+
+const getOrderDetailsById = async (orderId) => {
+  const { data, error } = await supabase
+    .from('order_details')
+    .select('id, quantity, products(name, price, imageURL)')
+    .eq('order_id', orderId)
+
+  const flattenedData = data.map(({ products, ...order }) => ({
+    ...order,
+    productName: products.name,
+    productPrice: products.price,
+    productImage: products.imageURL,
+  }))
+
+  if (error) {
+    return error
+  }
+
+  return flattenedData
+}
+
+export { createOrder, getOrdersByUserId, getAllOrders, getOrderDetailsById }

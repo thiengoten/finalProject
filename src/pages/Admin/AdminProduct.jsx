@@ -53,7 +53,15 @@ const AdminProduct = () => {
     const cellValue = item[columnKey]
     switch (columnKey) {
       case 'id':
-        return <p className="text-default-400">{cellValue}</p>
+        return (
+          <Tooltip color="foreground" content={cellValue}>
+            <span className="cursor-pointer text-base text-primary active:opacity-50">
+              <p className="max-w-[150px]  truncate text-default-400">
+                {cellValue}
+              </p>
+            </span>
+          </Tooltip>
+        )
       case 'name':
         return (
           <div className="flex items-center gap-2">
@@ -71,7 +79,7 @@ const AdminProduct = () => {
       case 'image':
         return (
           <img
-            className="h-20 w-20 rounded-sm object-cover"
+            className="h-auto w-32 rounded-sm object-cover"
             src={item.imageURL}
             alt="products"
           />
@@ -92,7 +100,9 @@ const AdminProduct = () => {
             <Tooltip color="danger" content="Delete user">
               <span
                 className="cursor-pointer text-lg text-danger active:opacity-50"
-                onClick={() => handleDelete(item.id)}
+                onClick={() => {
+                  handleDelete(item.id)
+                }}
               >
                 <DeleteIcon />
               </span>
