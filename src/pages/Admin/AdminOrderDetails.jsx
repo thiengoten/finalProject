@@ -1,8 +1,7 @@
 /* eslint-disable no-extra-semi */
 import { getOrderDetailsById } from '@/services'
-import { Card } from '@nextui-org/react'
+import { Card, Spinner } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
-import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
 const AdminOrderDetails = () => {
@@ -12,7 +11,6 @@ const AdminOrderDetails = () => {
     queryFn: () => getOrderDetailsById(id),
     enabled: !!id,
   })
-  console.log('🚀 ~ AdminOrderDetails ~ data:', data)
 
   return (
     <div className="p-6">
@@ -25,24 +23,28 @@ const AdminOrderDetails = () => {
           </div>
           <div className="mt-4">
             <h3 className="text-lg font-semibold">Order Items</h3>
-            {data?.map((item) => (
-              <div key={item.id} className="my-2 flex justify-between">
-                <div className="flex gap-4">
-                  <img
-                    src={item.productImage}
-                    alt={item.productName}
-                    className="h-16 w-16 rounded-lg object-cover"
-                  />
-                  <div>
-                    <h3 className="text-lg font-semibold">
-                      {item.productName}
-                    </h3>
-                    <p className="text-default-500">x{item.quantity}</p>
+            {data ? (
+              data?.map((item) => (
+                <div key={item.id} className="my-2 flex justify-between">
+                  <div className="flex gap-4">
+                    <img
+                      src={item.productImage}
+                      alt={item.productName}
+                      className="h-16 w-16 rounded-lg object-cover"
+                    />
+                    <div>
+                      <h3 className="text-lg font-semibold">
+                        {item.productName}
+                      </h3>
+                      <p className="text-default-500">x{item.quantity}</p>
+                    </div>
                   </div>
+                  <p className="text-lg font-bold">${item.productPrice}</p>
                 </div>
-                <p className="text-lg font-bold">${item.productPrice}</p>
-              </div>
-            ))}
+              ))
+            ) : (
+              <Spinner size="large" />
+            )}
           </div>
           <div className="mt-4">
             <h3 className="text-lg font-semibold">Total</h3>

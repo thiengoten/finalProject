@@ -6,6 +6,8 @@ import {
   TableRow,
   TableCell,
   Button,
+  Pagination,
+  Spinner,
 } from '@nextui-org/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useState } from 'react'
@@ -13,9 +15,9 @@ import { Tooltip } from '@nextui-org/react'
 import { deleteProduct, paginateProducts } from '@/services'
 import { EditIcon } from '@/assets/EditIcon'
 import { DeleteIcon } from '@/assets/DeleteIcon'
-import { columns } from '@/utils/helperFunction'
 import { Icon } from '@iconify/react'
 import { Link, useNavigate } from 'react-router-dom'
+import { columns } from '@/constants'
 
 const AdminProduct = () => {
   const [page, setPage] = useState(1)
@@ -23,12 +25,12 @@ const AdminProduct = () => {
 
   const queryClient = useQueryClient()
 
-  const { data, isLoading, isError } = useQuery(
+  const { data, isLoading, isFetching } = useQuery(
     ['products', page],
     () => paginateProducts(page),
     {
       keepPreviousData: true,
-      staleTime: 1000 * 4,
+      staleTime: 1000 * 10,
     },
   )
   const deleteProductMutation = useMutation({
@@ -126,28 +128,45 @@ const AdminProduct = () => {
         </Button>
       </div>
       <div className="mt-4">
-        {result && (
-          <Table aria-label="Example table with custom cells">
-            <TableHeader columns={columns}>
-              {(column) => {
-                return (
-                  <TableColumn key={column.uid}>
-                    {column.name.toUpperCase()}
-                  </TableColumn>
-                )
-              }}
-            </TableHeader>
-            <TableBody items={result}>
-              {(item) => (
-                <TableRow key={item.id}>
-                  {(columnKey) => (
-                    <TableCell>{renderCell(item, columnKey)}</TableCell>
-                  )}
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        )}
+        <Table
+          aria-label="Example table with custom cells"
+          bottomContent={
+            <div className="flex w-full justify-center">
+              <Pagination
+                isCompact
+                showControls
+                showShadow
+                total={totalPage}
+                onChange={(page) => {
+                  setPage(page)
+                }}
+              />
+            </div>
+          }
+        >
+          <TableHeader columns={columns}>
+            {(column) => {
+              return (
+                <TableColumn key={column.uid}>
+                  {column.name.toUpperCase()}
+                </TableColumn>
+              )
+            }}
+          </TableHeader>
+          <TableBody
+            items={result ?? []}
+            loadingState={isLoading || isFetching ? 'loading' : 'idle'}
+            loadingContent={<Spinner />}
+          >
+            {(item) => (
+              <TableRow key={item.id}>
+                {(columnKey) => (
+                  <TableCell>{renderCell(item, columnKey)}</TableCell>
+                )}
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
     </div>
   )

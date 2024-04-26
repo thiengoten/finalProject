@@ -1,4 +1,5 @@
 import { supabase } from '@/config/supabaseClient'
+import { ORDER_ITEM_PER_PAGE } from '@/constants'
 
 const createOrder = async (order, orderDetails) => {
   const { data: orderData, error: orderError } = await supabase
@@ -54,21 +55,29 @@ const getOrdersByUserId = async (userId) => {
   return flattenedData
 }
 
-const getAllOrders = async () => {
-  const { data, error } = await supabase
-    .from('orders')
-    .select('id, total_amount, status, profiles(email))')
+const getAllOrders = async (page) => {
+  const from = (page - 1) * ORDER_ITEM_PER_PAGE
+  const to = page * ORDER_ITEM_PER_PAGE - 1
 
-  if (error) {
-    throw error
-  }
+  const { data, error, count } = await supabase
+    .from('orders')
+    .select('id, total_amount, status, profiles(email))', { count: 'exact' })
+    .order('created_at', { ascending: false })
+    .range(from, to)
+
+  const total = Math.ceil(count / ORDER_ITEM_PER_PAGE)
+
+  if (error) return error
 
   const flattenedData = data.map(({ profiles, ...order }) => ({
     ...order,
     user: profiles.email,
   }))
 
-  return flattenedData
+  return {
+    result: flattenedData,
+    totalPage: total,
+  }
 }
 
 const getOrderDetailsById = async (orderId) => {

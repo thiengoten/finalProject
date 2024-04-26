@@ -119,7 +119,10 @@ const NavBar = () => {
                 <DropdownTrigger>
                   <Avatar
                     isBordered
-                    src={`https://api.dicebear.com/7.x/micah/svg?seed=${userData?.email}`}
+                    src={
+                      `${userData?.user_metadata?.avatar_url}` ||
+                      `https://api.dicebear.com/7.x/micah/svg?seed=${userData?.email}`
+                    }
                     size="medium"
                     as="button"
                   />

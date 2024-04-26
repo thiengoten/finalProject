@@ -19,7 +19,7 @@ export const paginateProducts = async (page) => {
 
   const total = Math.ceil(count / ITEMS_PER_PAGE)
 
-  if (error) throw error
+  if (error) return error
   return {
     result: data,
     totalPage: total,

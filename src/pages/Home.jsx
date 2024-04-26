@@ -3,6 +3,7 @@ import ProductCard from '@/components/products/ProductCard'
 import { Pagination } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 
 const Home = () => {
   const [page, setPage] = useState(1)

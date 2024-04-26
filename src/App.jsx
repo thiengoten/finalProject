@@ -1,6 +1,7 @@
 import { RouterProvider } from 'react-router-dom'
 import router from './routes'
 import { useDarkModeContext } from './hooks/useDarkMode'
+import { Toaster } from 'react-hot-toast'
 
 function App() {
   const { isDarkMode } = useDarkModeContext()
@@ -10,6 +11,7 @@ function App() {
       className={`${isDarkMode ? 'dark' : ''}  bg-background text-foreground`}
     >
       <RouterProvider router={router} />
+      <Toaster />
     </main>
   )
 }

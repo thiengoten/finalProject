@@ -1,8 +1,9 @@
 import { DeleteIcon } from '@/assets/DeleteIcon'
-import { EyeIcon } from '@/assets/EyeIcon'
+import { orderColumns } from '@/constants'
 import { getAllOrders } from '@/services'
-import { orderColumns } from '@/utils/helperFunction'
 import {
+  Pagination,
+  Spinner,
   Table,
   TableBody,
   TableCell,
@@ -12,14 +13,20 @@ import {
   Tooltip,
 } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const AdminOrder = () => {
-  const { data } = useQuery({
-    queryKey: ['orders'],
-    queryFn: () => getAllOrders(),
+  const [page, setPage] = useState(1)
+
+  const { data, isLoading, isFetching } = useQuery({
+    queryKey: ['orders', page],
+    queryFn: () => getAllOrders(page),
+    keepPreviousData: true,
+    staleTime: 1000 * 10,
   })
+  console.log('🚀 ~ AdminOrder ~ data:', data)
+  const { result, totalPage } = !!data && data
   const navigate = useNavigate()
   const renderCell = useCallback((item, columnKey) => {
     const cellValue = item[columnKey]
@@ -69,32 +76,47 @@ const AdminOrder = () => {
     <div className="p-6">
       <h2 className="text-2xl font-bold">User Orders</h2>
       <div className="mt-4">
-        {data && (
-          <Table
-            aria-label="Example table with custom cells"
-            selectionMode="single"
-            onRowAction={(row) => navigate(`/admin/user-orders/${row}`)}
+        <Table
+          aria-label="Example table with custom cells"
+          selectionMode="single"
+          bottomContent={
+            <div className="flex w-full justify-center">
+              <Pagination
+                isCompact
+                showControls
+                showShadow
+                total={totalPage}
+                onChange={(page) => {
+                  setPage(page)
+                }}
+              />
+            </div>
+          }
+          onRowAction={(row) => navigate(`/admin/user-orders/${row}`)}
+        >
+          <TableHeader columns={orderColumns}>
+            {(column) => {
+              return (
+                <TableColumn key={column.uid}>
+                  {column.name.toUpperCase()}
+                </TableColumn>
+              )
+            }}
+          </TableHeader>
+          <TableBody
+            items={result || []}
+            loadingState={isLoading || isFetching ? 'loading' : 'idle'}
+            loadingContent={<Spinner />}
           >
-            <TableHeader columns={orderColumns}>
-              {(column) => {
-                return (
-                  <TableColumn key={column.uid}>
-                    {column.name.toUpperCase()}
-                  </TableColumn>
-                )
-              }}
-            </TableHeader>
-            <TableBody items={data}>
-              {(item) => (
-                <TableRow key={item.id}>
-                  {(columnKey) => (
-                    <TableCell>{renderCell(item, columnKey)}</TableCell>
-                  )}
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        )}
+            {(item) => (
+              <TableRow key={item.id}>
+                {(columnKey) => (
+                  <TableCell>{renderCell(item, columnKey)}</TableCell>
+                )}
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
     </div>
   )

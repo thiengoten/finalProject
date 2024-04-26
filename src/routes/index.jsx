@@ -40,6 +40,7 @@ const router = createBrowserRouter(
         <Route path="user-orders" element={<AdminOrder />} />
         <Route path="user-orders/:id" element={<AdminOrderDetails />} />
         <Route path="users" element={<AdminUsers />} />
+        <Route path="login" element={<div>Login</div>} />
       </Route>
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="*" element={<div>404</div>} />
