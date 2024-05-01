@@ -19,6 +19,7 @@ import { logoutAction } from '@/utils/logout'
 import { updateProfileAction } from '@/utils/updateProfile'
 import {
   Route,
+  Routes,
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom'
@@ -40,7 +41,11 @@ const router = createBrowserRouter(
         <Route path="update-profile" action={updateProfileAction} />
       </Route>
       <Route path="/admin" element={<AdminLayout />}>
-        <Route path="products" element={<AdminProduct />} />
+        <Route
+          path="products"
+          element={<AdminProduct />}
+          loader={navbarLoader}
+        />
         <Route path="products/new" element={<AddProduct />} />
         <Route path="products/:id" element={<AddProduct />} />
         <Route path="user-orders" element={<AdminOrder />} />

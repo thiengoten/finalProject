@@ -10,21 +10,29 @@ import {
   Spinner,
 } from '@nextui-org/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Tooltip } from '@nextui-org/react'
 import { deleteProduct, paginateProducts } from '@/services'
 import { EditIcon } from '@/assets/EditIcon'
 import { DeleteIcon } from '@/assets/DeleteIcon'
 import { Icon } from '@iconify/react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLoaderData, useNavigate } from 'react-router-dom'
 import { columns } from '@/constants'
 import toast from 'react-hot-toast'
 
 const AdminProduct = () => {
   const [page, setPage] = useState(1)
   const navigate = useNavigate()
+  const userData = useLoaderData()
+  console.log('🚀 ~ AdminProduct ~ userData:', userData)
 
   const queryClient = useQueryClient()
+
+  useEffect(() => {
+    if (userData?.user_metadata?.user_role !== 'admin' || !userData) {
+      navigate('/admin/login')
+    }
+  }, [userData])
 
   const { data, isLoading, isFetching } = useQuery(
     ['products', page],
