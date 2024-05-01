@@ -38,12 +38,12 @@ import { useCartAction } from '@/hooks'
 import { actions } from '@/store'
 import { useStripe } from '@stripe/react-stripe-js'
 import { createOrder } from '@/services'
+import { supabase } from '@/config/supabaseClient'
 
 const NavBar = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const userData = useLoaderData()
-  console.log('🚀 ~ NavBar ~ userData:', userData)
-  const navigate = useNavigate()
+
   const stripe = useStripe()
   const [state, dispatch] = useCartAction()
   const { isDarkMode, toggle } = useDarkModeContext()
@@ -59,24 +59,26 @@ const NavBar = () => {
     if (test.orderDetailStatus === 201) {
       dispatch(actions.clearCart())
     }
-    // const { data, error } = await supabase.functions.invoke(
-    //   'stripe-stripe-checkout',
-    //   {
-    //     body: {
-    //       products: state.carts,
-    //     },
-    //   },
-    // )
 
-    // if (data) {
-    //   const test = await stripe.redirectToCheckout({
-    //     sessionId: data.id,
-    //   })
-    //   console.log('🚀 ~ handleAddToCart ~ test:', test)
-    // }
-    // if (error) {
-    //   console.error('🚀 ~ handleAddToCart ~ error:', error)
-    // }
+    const { data, error } = await supabase.functions.invoke(
+      'stripe-stripe-checkout',
+      {
+        body: {
+          products: state.carts,
+          orderId: test.orderData.id,
+        },
+      },
+    )
+
+    if (data) {
+      const test = await stripe.redirectToCheckout({
+        sessionId: data.id,
+      })
+      console.log('🚀 ~ handleAddToCart ~ test:', test)
+    }
+    if (error) {
+      console.error('🚀 ~ handleAddToCart ~ error:', error)
+    }
   }
 
   return (
@@ -120,8 +122,9 @@ const NavBar = () => {
                   <Avatar
                     isBordered
                     src={
-                      `${userData?.user_metadata?.avatar_url}` ||
-                      `https://api.dicebear.com/7.x/micah/svg?seed=${userData?.email}`
+                      userData?.user_metadata?.avatar_url
+                        ? `${userData?.user_metadata?.avatar_url}`
+                        : `https://api.dicebear.com/7.x/micah/svg?seed=${userData?.email}`
                     }
                     size="medium"
                     as="button"
@@ -134,7 +137,9 @@ const NavBar = () => {
                       {userData?.email}
                     </p>
                   </DropdownItem>
-                  <DropdownItem key="settings">My Settings</DropdownItem>
+                  <DropdownItem key="settings">
+                    <Link to="/profile">My Profile</Link>
+                  </DropdownItem>
                   <DropdownItem key="my_order">
                     <Link to="/orders">My Order</Link>
                   </DropdownItem>

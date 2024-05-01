@@ -24,6 +24,7 @@ const AdminOrder = () => {
     queryFn: () => getAllOrders(page),
     keepPreviousData: true,
     staleTime: 1000 * 10,
+    retry: 1,
   })
   console.log('🚀 ~ AdminOrder ~ data:', data)
   const { result, totalPage } = !!data && data
@@ -80,17 +81,19 @@ const AdminOrder = () => {
           aria-label="Example table with custom cells"
           selectionMode="single"
           bottomContent={
-            <div className="flex w-full justify-center">
-              <Pagination
-                isCompact
-                showControls
-                showShadow
-                total={totalPage}
-                onChange={(page) => {
-                  setPage(page)
-                }}
-              />
-            </div>
+            totalPage >= 1 && (
+              <div className="flex w-full justify-center">
+                <Pagination
+                  isCompact
+                  showControls
+                  showShadow
+                  total={totalPage}
+                  onChange={(page) => {
+                    setPage(page)
+                  }}
+                />
+              </div>
+            )
           }
           onRowAction={(row) => navigate(`/admin/user-orders/${row}`)}
         >
@@ -107,6 +110,7 @@ const AdminOrder = () => {
             items={result || []}
             loadingState={isLoading || isFetching ? 'loading' : 'idle'}
             loadingContent={<Spinner />}
+            emptyContent={'No data to display.'}
           >
             {(item) => (
               <TableRow key={item.id}>

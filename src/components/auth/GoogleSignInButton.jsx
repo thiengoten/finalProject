@@ -21,8 +21,7 @@ const GoogleSignInButton = ({ onOpenChange }) => {
   useEffect(() => {
     if (divRef.current) {
       window.google?.accounts.id.initialize({
-        client_id:
-          '272725794739-f3n7v1m89inr4ell8q9i2sqntlj1u8vu.apps.googleusercontent.com',
+        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
         callback: handleSignInWithGoogle,
         context: 'signin',
         ux_mode: 'popup',

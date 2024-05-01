@@ -17,3 +17,22 @@ export const getProfiles = async (page) => {
     totalPage: total,
   }
 }
+
+export const getProfileById = async (id) => {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select()
+    .eq('id', id)
+    .single()
+  if (error) return error
+  return data
+}
+
+export const updateProfile = async (id, profile) => {
+  const { error, status } = await supabase
+    .from('profiles')
+    .update(profile)
+    .eq('id', id)
+  if (error) return error
+  return status
+}

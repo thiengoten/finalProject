@@ -41,12 +41,15 @@ Deno.serve(async (req) => {
   switch (event.type) {
     // deno-lint-ignore no-case-declarations
     case 'checkout.session.completed':
-      // const {data} = await supabase.from('orders').insert([
-      //   {
-      //     user_id
-      //     total_amount: event.data.object.amount_total,
-      //   },
-      // ])
+      const { data, error } = await supabase
+        .from('orders')
+        .update({
+          status: 'Paid',
+        })
+        .match({ id: event.data.object.metadata.orderID })
+      if (error) {
+        console.log('🚀 ~ error ~ error', error)
+      }
       break
     case 'payment_intent.succeeded':
       break

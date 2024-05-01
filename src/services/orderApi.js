@@ -9,7 +9,7 @@ const createOrder = async (order, orderDetails) => {
     .single()
 
   if (orderError) {
-    throw orderError
+    return orderError
   }
 
   const { status: orderDetailStatus, error: orderDetailError } = await supabase
@@ -26,7 +26,7 @@ const createOrder = async (order, orderDetails) => {
     return orderDetailError
   }
 
-  return { orderDetails, orderDetailStatus }
+  return { orderData, orderDetails, orderDetailStatus }
 }
 
 const getOrdersByUserId = async (userId) => {

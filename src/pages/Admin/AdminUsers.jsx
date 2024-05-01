@@ -1,7 +1,7 @@
 /* eslint-disable no-extra-semi */
 import { DeleteIcon } from '@/assets/DeleteIcon'
 import { userColumns } from '@/constants'
-import { getProfiles } from '@/services/userApi'
+import { getProfiles } from '@/services'
 import {
   Pagination,
   Spinner,
@@ -15,7 +15,7 @@ import {
 } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import { useCallback, useState } from 'react'
-
+//TODO: Thêm nhấn vào mỗi user để xem các đơn hàng của user đó
 const AdminUsers = () => {
   const [page, setPage] = useState(1)
 
@@ -101,6 +101,7 @@ const AdminUsers = () => {
           <TableBody
             items={result || []}
             loadingContent={<Spinner />}
+            emptyContent={'No data to display.'}
             loadingState={
               !result ? 'loading' : data.length === 0 ? 'empty' : 'idle'
             }

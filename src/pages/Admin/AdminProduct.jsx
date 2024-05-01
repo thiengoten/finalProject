@@ -18,6 +18,7 @@ import { DeleteIcon } from '@/assets/DeleteIcon'
 import { Icon } from '@iconify/react'
 import { Link, useNavigate } from 'react-router-dom'
 import { columns } from '@/constants'
+import toast from 'react-hot-toast'
 
 const AdminProduct = () => {
   const [page, setPage] = useState(1)
@@ -39,6 +40,7 @@ const AdminProduct = () => {
       queryClient.invalidateQueries({
         queryKey: ['products', page],
       })
+      toast.success('Product deleted successfully')
     },
     onError: async (error) => {
       console.log(error)
@@ -131,17 +133,19 @@ const AdminProduct = () => {
         <Table
           aria-label="Example table with custom cells"
           bottomContent={
-            <div className="flex w-full justify-center">
-              <Pagination
-                isCompact
-                showControls
-                showShadow
-                total={totalPage}
-                onChange={(page) => {
-                  setPage(page)
-                }}
-              />
-            </div>
+            totalPage >= 1 && (
+              <div className="flex w-full justify-center">
+                <Pagination
+                  isCompact
+                  showControls
+                  showShadow
+                  total={totalPage}
+                  onChange={(page) => {
+                    setPage(page)
+                  }}
+                />
+              </div>
+            )
           }
         >
           <TableHeader columns={columns}>
@@ -156,6 +160,7 @@ const AdminProduct = () => {
           <TableBody
             items={result ?? []}
             loadingState={isLoading || isFetching ? 'loading' : 'idle'}
+            emptyContent={'No data to display.'}
             loadingContent={<Spinner />}
           >
             {(item) => (

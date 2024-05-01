@@ -5,5 +5,5 @@ export async function navbarLoader() {
     data: { user },
   } = await supabase.auth.getUser()
 
-  return user ? user : null;
+  return user ? user : null
 }

@@ -1,15 +1,13 @@
-import Toast from '@/components/common/Toast'
 import { supabase } from '@/config/supabaseClient'
 import { createProduct, getProductById, updateProduct } from '@/services'
 import { Input, RadioGroup, Radio, Button } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { useMatch, useParams } from 'react-router-dom'
 const AddProduct = () => {
   const [image, setImage] = useState(null)
-  console.log('🚀 ~ AddProduct ~ image:', image)
-  const [isSuccess, setIsSuccess] = useState(false)
   const { id } = useParams()
   const isAddMode = useMatch('/admin/products/new')
 
@@ -52,31 +50,22 @@ const AddProduct = () => {
           ? `https://ahspekfrkxpnpkvmnwcd.supabase.co/storage/v1/object/public/products/${image.name}`
           : null,
       }
+
+      const addStatus = await createProduct(formData)
+      if (addStatus === 201) {
+        reset()
+        setImage(null)
+        toast.success('Product added successfully')
+      }
+    } else {
+      const updateStatus = await updateProduct(id, data)
+      if (updateStatus === 204) {
+        toast.success('Product updated successfully')
+      }
     }
-    //   const addStatus = await createProduct(formData)
-    //   if (addStatus === 201) {
-    //     reset()
-    //     setImage(null)
-    //     setIsSuccess(true)
-    //   }
-    // } else {
-    //   const updateStatus = await updateProduct(id, data)
-    //   if (updateStatus === 204) {
-    //     setIsSuccess(true)
-    //   }
-    // }
   }
   return (
     <div className="p-6">
-      {isSuccess && (
-        <Toast
-          message={
-            id ? 'Product updated successfully' : 'Product added successfully'
-          }
-          type="success"
-          onClose={() => setIsSuccess(false)}
-        />
-      )}
       <h2 className="text-2xl font-bold">
         {id ? 'Edit Product' : 'Add Product'}
       </h2>

@@ -18,6 +18,7 @@ import { useState } from 'react'
 import { Form, useNavigate } from 'react-router-dom'
 import { supabase } from '@/config/supabaseClient'
 import GoogleSignInButton from './GoogleSignInButton'
+import toast from 'react-hot-toast'
 
 const schema = yup.object().shape({
   email: yup
@@ -58,34 +59,19 @@ const LoginModal = ({ isOpen, onOpenChange }) => {
 
   const onSubmit = async (resource) => {
     const { email, password } = resource
-    let { data, error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
-
+    if (error) {
+      toast.error('Invalid email or password')
+      return
+    }
     if (data) {
       onOpenChange(false)
       navigate('/')
     }
   }
-
-  // const handleSigninWithGoogle = async () => {
-  //   try {
-  //     const { data, error } = await supabase.auth.signInWithOAuth({
-  //       provider: 'google',
-  //       options: {
-  //         queryParams: {
-  //           access_type: 'offline',
-  //           prompt: 'consent',
-  //         },
-  //       },
-  //     })
-  //     console.log('🚀 ~ handleSigninWithGoogle ~ data:', data)
-  //     console.log(error)
-  //   } catch (error) {
-  //     console.log('🚀 ~ handleSigninWithGoogle ~ error:', error)
-  //   }
-  // }
 
   return (
     <>

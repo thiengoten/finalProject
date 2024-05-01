@@ -14,6 +14,7 @@ import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { LockIcon } from '@/assets/LockIcon'
 import { supabase } from '@/config/supabaseClient'
+import toast from 'react-hot-toast'
 
 const schema = yup.object().shape({
   email: yup
@@ -51,19 +52,19 @@ const SignUp = () => {
     let { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          avatar_url: '',
+        },
+      },
     })
-    console.log('🚀 ~ onSubmit ~ data:', data)
 
     if (error) return console.log(error)
 
     setTimeout(() => {
+      toast.success('Sign up successfully')
       trigSuccessInput.fire()
-      setTimeout(() => {
-        navigate('/', {
-          replace: true,
-        })
-      }, 1000)
-    }, 2000)
+    }, 1000)
   }
 
   const { rive, RiveComponent } = useRive({
@@ -184,7 +185,6 @@ const SignUp = () => {
             </form>
           </CardBody>
         </Card>
-        Car
       </div>
     </div>
   )

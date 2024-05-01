@@ -18,9 +18,9 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { products } = await req.json()
+    const { products, orderId } = await req.json()
+    console.log('🚀 ~ Deno.serve ~ orderId:', orderId)
     const token = req.headers.get('Authorization')!.replace('Bearer ', '')
-    console.log('🚀 ~ token ~ token:', token)
     if (!token) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -54,6 +54,7 @@ Deno.serve(async (req) => {
       },
       metadata: {
         products: JSON.stringify(metaData),
+        orderID: orderId,
       },
       success_url:
         'https://remix-cloudflare-workers.jonmeyers.workers.dev/success',
