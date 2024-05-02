@@ -6,7 +6,7 @@ export const getProfiles = async (page) => {
   const to = page * USER_ITEM_PER_PAGE - 1
   const { data, error, count } = await supabase
     .from('profiles')
-    .select('id, full_name, email', { count: 'exact' })
+    .select('id, full_name, email, user_role', { count: 'exact' })
     .range(from, to)
 
   const total = Math.ceil(count / USER_ITEM_PER_PAGE)

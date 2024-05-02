@@ -100,4 +100,23 @@ const getOrderDetailsById = async (orderId) => {
   return flattenedData
 }
 
-export { createOrder, getOrdersByUserId, getAllOrders, getOrderDetailsById }
+const deleteOrder = async (orderId) => {
+  const { error, status } = await supabase
+    .from('orders')
+    .delete()
+    .eq('id', orderId)
+
+  if (error) {
+    return error
+  }
+
+  return status
+}
+
+export {
+  createOrder,
+  getOrdersByUserId,
+  getAllOrders,
+  getOrderDetailsById,
+  deleteOrder,
+}

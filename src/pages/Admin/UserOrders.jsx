@@ -1,8 +1,7 @@
 import { DeleteIcon } from '@/assets/DeleteIcon'
-import { orderColumns } from '@/constants'
-import { deleteOrder, getAllOrders } from '@/services'
+import { userOrderColumns } from '@/constants'
+import { deleteOrder, getOrdersByUserId } from '@/services'
 import {
-  Pagination,
   Spinner,
   Table,
   TableBody,
@@ -13,27 +12,26 @@ import {
   Tooltip,
 } from '@nextui-org/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import toast from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
-const AdminOrder = () => {
-  const [page, setPage] = useState(1)
-  const navigate = useNavigate()
+const UserOrders = () => {
+  const { id } = useParams()
   const queryClient = useQueryClient()
-  const { data, isLoading, isFetching } = useQuery({
-    queryKey: ['orders', page],
-    queryFn: () => getAllOrders(page),
-    keepPreviousData: true,
-    staleTime: 1000 * 10,
-    retry: 1,
+  const navigate = useNavigate()
+
+  const { data } = useQuery({
+    queryKey: ['orders'],
+    queryFn: () => getOrdersByUserId(id),
+    enabled: !!id,
   })
-  const { result, totalPage } = !!data && data
+
   const deleteOrderMutation = useMutation({
     mutationFn: (id) => deleteOrder(id),
     onSuccess: async () => {
       queryClient.invalidateQueries({
-        queryKey: ['orders', page],
+        queryKey: ['orders'],
       })
       toast.success('Order deleted successfully')
     },
@@ -44,6 +42,7 @@ const AdminOrder = () => {
   const handleDelete = (id) => {
     deleteOrderMutation.mutate(id)
   }
+
   const renderCell = useCallback((item, columnKey) => {
     const cellValue = item[columnKey]
     switch (columnKey) {
@@ -57,24 +56,23 @@ const AdminOrder = () => {
             </span>
           </Tooltip>
         )
-      case 'user':
-        return (
-          <div className="flex items-center gap-2">
-            <p className="text-bold text-sm">{cellValue}</p>
-          </div>
-        )
+      case 'total_amount':
+        return <p className="text-default-900">{cellValue}</p>
       case 'status':
         return (
-          <p className="max-w-[250px]  truncate text-default-400">
+          <p
+            className={
+              cellValue === 'Paid' ? 'text-success' : 'text-default-400'
+            }
+          >
             {cellValue}
           </p>
         )
-      case 'total':
-        return <p className="text-default-400">{cellValue}</p>
+
       case 'actions':
         return (
           <div className="relative flex items-center gap-2">
-            <Tooltip color="danger" content="Delete order">
+            <Tooltip color="danger" content="Delete user">
               <span
                 className="cursor-pointer text-lg text-danger active:opacity-50"
                 onClick={() => {
@@ -92,29 +90,14 @@ const AdminOrder = () => {
   }, [])
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold">User Orders</h2>
+      <h1 className="text-bold text-3xl text-default-900">Users</h1>
+
       <div className="mt-4">
         <Table
-          aria-label="Example table with custom cells"
           selectionMode="single"
-          bottomContent={
-            totalPage >= 1 && (
-              <div className="flex w-full justify-center">
-                <Pagination
-                  isCompact
-                  showControls
-                  showShadow
-                  total={totalPage}
-                  onChange={(page) => {
-                    setPage(page)
-                  }}
-                />
-              </div>
-            )
-          }
           onRowAction={(row) => navigate(`/admin/user-orders/${row}`)}
         >
-          <TableHeader columns={orderColumns}>
+          <TableHeader columns={userOrderColumns}>
             {(column) => {
               return (
                 <TableColumn key={column.uid}>
@@ -124,10 +107,12 @@ const AdminOrder = () => {
             }}
           </TableHeader>
           <TableBody
-            items={result || []}
-            loadingState={isLoading || isFetching ? 'loading' : 'idle'}
+            items={data || []}
             loadingContent={<Spinner />}
             emptyContent={'No data to display.'}
+            loadingState={
+              !data ? 'loading' : data.length === 0 ? 'empty' : 'idle'
+            }
           >
             {(item) => (
               <TableRow key={item.id}>
@@ -143,4 +128,4 @@ const AdminOrder = () => {
   )
 }
 
-export default AdminOrder
+export default UserOrders

@@ -7,6 +7,7 @@ import AdminOrderDetails from '@/pages/Admin/AdminOrderDetails'
 
 import AdminProduct from '@/pages/Admin/AdminProduct'
 import AdminUsers from '@/pages/Admin/AdminUsers'
+import UserOrders from '@/pages/Admin/UserOrders'
 import Chat from '@/pages/Chat'
 import Home from '@/pages/Home'
 import Orders from '@/pages/Orders'
@@ -49,6 +50,7 @@ const router = createBrowserRouter(
         <Route path="products/new" element={<AddProduct />} />
         <Route path="products/:id" element={<AddProduct />} />
         <Route path="user-orders" element={<AdminOrder />} />
+        <Route path="user-list-order/:id" element={<UserOrders />} />
         <Route path="user-orders/:id" element={<AdminOrderDetails />} />
         <Route path="users" element={<AdminUsers />} />
         <Route path="login" element={<AdminLogin />} />

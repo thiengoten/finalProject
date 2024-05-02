@@ -4,12 +4,21 @@ import { ArrowFilledIcon } from '@/assets/ArrowFilledIcon'
 import { openai } from '@/config/openaiClient'
 import { useDarkModeContext } from '@/hooks/useDarkMode'
 import OpenAI from 'openai'
+import { useQuery } from '@tanstack/react-query'
+import { getAllProducts } from '@/services'
 
 const Chat = () => {
   const [userInput, setUserInput] = useState('')
   const { isDarkMode } = useDarkModeContext()
   const [message, setMessages] = useState([])
   const [isType, setIsType] = useState(false)
+
+  const { data } = useQuery({
+    queryKey: ['products'],
+    queryFn: () => getAllProducts(),
+  })
+
+  console.log('🚀 ~ Chat ~ data:', data)
   const handleSummit = async () => {
     try {
       setIsType(true)
@@ -25,8 +34,9 @@ const Chat = () => {
         messages: [
           {
             role: 'system',
-            content:
-              'You are MewAssist of keycap shop, starting with cute word like MeowMeow or something cute.',
+            content: `You are MewAssist of keycap shop, starting with cute word like MeowMeow or something cute. And this is the newest products ${
+              data?.map((item) => item.name).join(', ') || ''
+            }`,
           },
           { role: 'user', content: userInput.trim() },
         ],
@@ -126,7 +136,7 @@ const Chat = () => {
         />
         <Button
           isIconOnly
-          color="secondary"
+          color="primary"
           aria-label="Like"
           onClick={handleSummit}
         >

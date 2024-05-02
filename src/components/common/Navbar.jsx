@@ -95,9 +95,6 @@ const NavBar = () => {
           <NavbarItem className="transform transition duration-300 ease-in-out hover:scale-110 hover:text-primary">
             <NavLink to="/about">About</NavLink>
           </NavbarItem>
-          <NavbarItem className="transform transition duration-300 ease-in-out hover:scale-110 hover:text-primary">
-            <NavLink to="integrations">Integrations</NavLink>
-          </NavbarItem>
         </NavbarContent>
         <NavbarContent justify="end">
           <NavbarItem>

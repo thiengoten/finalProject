@@ -15,9 +15,11 @@ import {
 } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import { useCallback, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 //TODO: Thêm nhấn vào mỗi user để xem các đơn hàng của user đó
 const AdminUsers = () => {
   const [page, setPage] = useState(1)
+  const navigate = useNavigate()
 
   const { data } = useQuery({
     queryKey: ['profiles', page],
@@ -51,19 +53,29 @@ const AdminUsers = () => {
             {cellValue}
           </p>
         )
-      case 'actions':
+      case 'user_role':
         return (
-          <div className="relative flex items-center gap-2">
-            <Tooltip color="danger" content="Delete user">
-              <span
-                className="cursor-pointer text-lg text-danger active:opacity-50"
-                onClick={() => {}}
-              >
-                <DeleteIcon />
-              </span>
-            </Tooltip>
-          </div>
+          <p
+            className={
+              cellValue === 'admin' ? 'text-danger' : 'text-default-400'
+            }
+          >
+            {cellValue}
+          </p>
         )
+      // case 'actions':
+      //   return (
+      //     <div className="relative flex items-center gap-2">
+      //       <Tooltip color="danger" content="Delete user">
+      //         <span
+      //           className="cursor-pointer text-lg text-danger active:opacity-50"
+      //           onClick={() => {}}
+      //         >
+      //           <DeleteIcon />
+      //         </span>
+      //       </Tooltip>
+      //     </div>
+      //   )
       default:
         return cellValue
     }
@@ -75,6 +87,10 @@ const AdminUsers = () => {
 
       <div className="mt-4">
         <Table
+          selectionMode="single"
+          onRowAction={(row) => {
+            navigate(`/admin/user-list-order/${row}`)
+          }}
           bottomContent={
             <div className="flex w-full justify-center">
               <Pagination

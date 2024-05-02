@@ -29,5 +29,13 @@ export const userColumns = [
   { name: 'ID', uid: 'id' },
   { name: 'NAME', uid: 'full_name' },
   { name: 'EMAIL', uid: 'email' },
+  { name: 'ROLE', uid: 'user_role' },
+  // { name: 'ACTIONS', uid: 'actions' },
+]
+
+export const userOrderColumns = [
+  { name: 'ID', uid: 'id' },
+  { name: 'TOTAL', uid: 'total_amount' },
+  { name: 'STATUS', uid: 'status' },
   { name: 'ACTIONS', uid: 'actions' },
 ]

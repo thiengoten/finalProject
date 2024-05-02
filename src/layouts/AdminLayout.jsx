@@ -1,11 +1,5 @@
 import Sidebar from '@/components/common/Sidebar'
-import { useEffect } from 'react'
-import {
-  Outlet,
-  useLoaderData,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 const AdminLayout = () => {
   const location = useLocation()
   const isAdminAuthPage = ['/admin/login', '/admin/register'].includes(

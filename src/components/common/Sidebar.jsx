@@ -1,6 +1,6 @@
 import { supabase } from '@/config/supabaseClient'
 import { Icon } from '@iconify/react'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 const Sidebar = () => {
   return (
@@ -58,24 +58,15 @@ const Sidebar = () => {
             Users
           </NavLink>
         </li>
-        <li className="mt-10">
-          <NavLink
-            to={'/admin'}
-            className={({ isActive }) => {
-              const activeClass = isActive
-                ? ' bg-slate-200 font-medium text-gray-700'
-                : ''
-              const hoverClass = isActive
-                ? 'hover:bg-slate-200'
-                : 'hover:bg-zinc-700'
-              return `rounded-xl p-3 ${activeClass} ${hoverClass} mb-2  block text-sm text-default-500`
-            }}
+        <li className="rounded-lg p-4 hover:bg-gray-700">
+          <Link
             onClick={async () => {
               await supabase.auth.signOut()
             }}
+            className="block text-sm text-gray-200 hover:text-white"
           >
             Logout
-          </NavLink>
+          </Link>
         </li>
       </ul>
     </div>
