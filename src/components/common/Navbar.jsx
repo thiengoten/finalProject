@@ -56,9 +56,6 @@ const NavBar = () => {
       },
       state.carts,
     )
-    if (test.orderDetailStatus === 201) {
-      dispatch(actions.clearCart())
-    }
 
     const { data, error } = await supabase.functions.invoke(
       'stripe-stripe-checkout',
@@ -74,7 +71,9 @@ const NavBar = () => {
       const test = await stripe.redirectToCheckout({
         sessionId: data.id,
       })
-      console.log('🚀 ~ handleAddToCart ~ test:', test)
+      if (test.orderDetailStatus === 201) {
+        dispatch(actions.clearCart())
+      }
     }
     if (error) {
       console.error('🚀 ~ handleAddToCart ~ error:', error)

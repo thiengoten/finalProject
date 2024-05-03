@@ -21,7 +21,7 @@ const Home = () => {
   return (
     <>
       <h1 className="my-6 text-2xl font-semibold">Products</h1>
-      <div className="grid grid-cols-2 gap-unit-lg sm:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-unit-lg min-[300px]:grid-cols-1 sm:grid-cols-3 lg:grid-cols-4">
         {result?.map((product, index) => (
           <ProductCard key={index} product={product} isLoading={isLoading} />
         ))}

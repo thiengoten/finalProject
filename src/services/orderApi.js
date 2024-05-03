@@ -33,7 +33,7 @@ const getOrdersByUserId = async (userId) => {
   const { data, error } = await supabase
     .from('orders')
     .select(
-      'id, total_amount, status, order_details(id, quantity, products(name, price, imageURL))',
+      'id, total_amount, status, created_at, order_details(id, quantity, products(name, price, imageURL))',
     )
     .eq('user_id', userId)
 
